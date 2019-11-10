@@ -123,5 +123,14 @@ class Schema
      */
     public function drop()
     {
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        // Parse SQL from columns.
+        $sql = 'DROP TABLE  IF EXISTS ' . $this->table . ';';
+
+        // Execute using WPDB.
+        $wpdb->query($sql);
     }
 }

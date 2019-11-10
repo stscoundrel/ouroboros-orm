@@ -78,6 +78,8 @@ abstract class Migration
      */
     public function down()
     {
-        \WP_CLI::log('down!');
+        $schema = $this->get_schema();
+
+        $schema->drop();
     }
 }
