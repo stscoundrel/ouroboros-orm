@@ -45,11 +45,32 @@ abstract class Migration
     }
 
     /**
+     * Set migration table schema
+     *
+     * @param Schema $schema object of table.
+     */
+    protected function set_schema($schema)
+    {
+        $this->schema = $schema;
+    }
+
+    /**
+     * Return migration schema
+     *
+     * @return Schema $schema object of table.
+     */
+    protected function get_schema()
+    {
+        return $this->schema;
+    }
+
+    /**
      * Create table, save columns.
      */
     public function up()
     {
         \WP_CLI::log('up!');
+        var_dump($this->get_schema());
     }
 
     /**
