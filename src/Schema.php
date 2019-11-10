@@ -7,13 +7,11 @@
 
 namespace Silvanus\Ouroboros;
 
-use \Silvanus\Ouroboros\Schema\TypesInterface;
-
 /**
  * --> Define table name
  * --> Define table structure
  */
-class Schema implements TypesInterface
+class Schema
 {
 
     /**
@@ -22,6 +20,14 @@ class Schema implements TypesInterface
      * @var string
      */
     protected $table;
+
+    /**
+     * Primary key
+     * If not set, defaults to 'id'
+     *
+     * @var string
+     */
+    protected $primary_key;
 
     /**
      * Table columns
@@ -36,15 +42,20 @@ class Schema implements TypesInterface
      * @param string $table name.
      * @param array $columns key/value list,.
      */
-    public function __construct($table, $columns)
+    public function __construct($table, $columns, $primary_key = false)
     {
         global $wpdb;
 
+        // Set table name.
         $this->table = $wpdb->prefix . $table;
 
+        // Set columns.
         foreach ($columns as $name => $type) :
             $this->add_column($name, $type);
         endforeach;
+
+        // Set primary key, if defined.
+        $this->primary_key = $primary_key == false ? 'id' : $primary_key;
     }
 
     /**
@@ -55,22 +66,56 @@ class Schema implements TypesInterface
      */
     public function add_column($name, $type)
     {
-        // Maybe format Type
-        if (is_array($type)) :
-            // Format text types
-            if (in_array($type[0], self::CHAR_TYPES)) :
-                $type = $type[0] . '(' . $type[1] . ')';
-            endif;
-        endif;
-
         $this->columns[$name] = $type;
     }
 
     /**
+     * Return columns array
+     *
+     * @return array $columns of table;
+     */
+    public function get_columns()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Return columns as SQL
+     *
+     * @return string $columns in sql format.
+     */
+    public function get_columns_sql()
+    {
+        $columns = '';
+
+        foreach ($this->get_columns() as $name => $type) :
+            $columns .= $name . ' ' . $type . ', ';
+        endforeach;
+
+        // Append primary key definition.
+        $columns .= 'PRIMARY KEY (' . $this->primary_key . ')';
+
+        return $columns;
+    }
+
+    /**
      * Save table to database.
+     * How WP wants this done:
+     * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
      */
     public function create()
     {
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        // Parse SQL from columns.
+        $sql = 'CREATE TABLE ' . $this->table . ' ( ' . $this->get_columns_sql() . ' ) ' . $charset_collate . ';';
+
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        // Execute using WordPress functions.
+        dbDelta($sql);
     }
 
     /**

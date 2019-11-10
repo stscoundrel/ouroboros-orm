@@ -37,6 +37,10 @@ abstract class Migration
      */
     public function __construct()
     {
+
+        // Set schema defined in child class.
+        $this->set_schema();
+
         /**
          * Expose our CLI commands through classname keyword
          * Example: wp [NAME_OF_MIGRATION] up
@@ -46,13 +50,8 @@ abstract class Migration
 
     /**
      * Set migration table schema
-     *
-     * @param Schema $schema object of table.
      */
-    protected function set_schema($schema)
-    {
-        $this->schema = $schema;
-    }
+    abstract public function set_schema();
 
     /**
      * Return migration schema
@@ -69,8 +68,9 @@ abstract class Migration
      */
     public function up()
     {
-        \WP_CLI::log('up!');
-        var_dump($this->get_schema());
+        $schema = $this->get_schema();
+
+        $schema->create();
     }
 
     /**
