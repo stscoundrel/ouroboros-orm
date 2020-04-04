@@ -90,7 +90,7 @@ class Model
     public function create() {
         global $wpdb;
 
-        $wpdb->insert( $this->get_table(), $this->attributes );     
+        $wpdb->insert( self::get_table(), $this->attributes );     
     }
 
     /**
@@ -98,11 +98,11 @@ class Model
      */
     public function update() {
         global $wpdb;
-
+        
         $wpdb->update(
-            $this->get_table(),
+            self::get_table(),
             $this->attributes,
-            array( $this->get_primary_key() => $this->id ),
+            array( self::get_primary_key() => $this->id ),
         );     
     }
 
@@ -113,8 +113,8 @@ class Model
         global $wpdb;
 
         $wpdb->delete(
-            $this->get_table(),
-            array( $this->get_primary_key() => $this->id ),
+            self::get_table(),
+            array( self::get_primary_key() => $this->id ),
         );     
     }
 
@@ -122,15 +122,28 @@ class Model
      * Find record from DB.
      *
      * @param int $id of record.
-     * @return array $record by id.
+     * @return Model $record by id.
      */
     public static function find( $id ) {
         global $wpdb;
 
+        $record = null;
+
         $table       = self::get_table();
         $primary_key = self::get_primary_key();
 
-        $record = $wpdb->get_row( "SELECT * FROM $table WHERE $primary_key = $id", ARRAY_A );
+        $result = $wpdb->get_row( "SELECT * FROM $table WHERE $primary_key = $id", ARRAY_A );
+
+        if( $result ) :
+            $class = get_called_class();
+            $record = new $class( $result[ $primary_key ] );
+
+            foreach( $result as $key => $value ) :
+                if( $key !== $primary_key ) :
+                    $record->set( $key, $value );
+                endif;
+            endforeach;
+        endif;
 
         return $record;
     }
