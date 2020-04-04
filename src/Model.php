@@ -78,6 +78,16 @@ class Model implements ModelInterface
     }
 
     /**
+     * Get model attribute.
+     *
+     * @param string $key of attribute.
+     * @return mixed $value of attribute.
+     */
+    public function get( $key ) {
+        return $this->attributes[ $key ];
+    }
+
+    /**
      * Set model attribute.
      *
      * @param string $key of attribute.
@@ -186,9 +196,25 @@ class Model implements ModelInterface
     public function all() {
         global $wpdb;        
 
-        $table = self::get_table();
-        
-        $records = $wpdb->get_results( "SELECT * FROM $table", ARRAY_A );
+        $records = array();
+
+        $table       = self::get_table();
+        $primary_key = self::get_primary_key();
+
+        $results = $wpdb->get_results( "SELECT * FROM $table", ARRAY_A );
+
+        foreach( $results as $result ):
+            $class = get_called_class();
+            $record = new $class( $result[ $primary_key ] );
+
+            foreach( $result as $key => $value ) :
+                if( $key !== $primary_key ) :
+                    $record->set( $key, $value );
+                endif;
+            endforeach;
+
+            $records[] = $record;
+        endforeach;
 
         return $records;
     }

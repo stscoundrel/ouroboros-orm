@@ -23,10 +23,18 @@ class Movie extends Model {
 	 * Thats it!
 	 * You can add your custom model method here.
 	 * Or use standard ones like:
+	 *
+	 * Attributes:
+	 * - Get
+	 * - Set
+	 *
+	 * CRUD:
 	 * - Find
 	 * - Create
 	 * - Update
 	 * - Delete
+	 * - All
+	 * 
 	 */
 
 }
