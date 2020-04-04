@@ -16,14 +16,14 @@ class Model
     /**
      * Table name in database.
      */
-    protected $table;
+    protected static $table;
 
     /**
      * Primary key of table.
      * Default: id.
      * Used to fetch records by id.
      */
-    protected $primary_key = 'id';
+    protected static  $primary_key = 'id';
 
     /**
      * Model attributes
@@ -50,10 +50,10 @@ class Model
      *
      * @return string $table name.
      */
-    private function get_table() {
+    private static function get_table() {
         global $wpdb;
 
-        return $wpdb->prefix . $this->table;
+        return $wpdb->prefix . static::$table;
     }
 
     /**
@@ -61,8 +61,8 @@ class Model
      *
      * @return string $primary_key of table.
      */
-    private function get_primary_key() {
-        return $this->primary_key;
+    private static function get_primary_key() {
+        return self::$primary_key;
     }
 
     /**
@@ -107,7 +107,7 @@ class Model
     }
 
     /**
-     * Delete record in DB.
+     * Delete record from DB.
      */
     public function delete() {
         global $wpdb;
@@ -116,5 +116,22 @@ class Model
             $this->get_table(),
             array( $this->get_primary_key() => $this->id ),
         );     
+    }
+
+    /**
+     * Find record from DB.
+     *
+     * @param int $id of record.
+     * @return array $record by id.
+     */
+    public static function find( $id ) {
+        global $wpdb;
+
+        $table       = self::get_table();
+        $primary_key = self::get_primary_key();
+
+        $record = $wpdb->get_row( "SELECT * FROM $table WHERE $primary_key = $id", ARRAY_A );
+
+        return $record;
     }
 }
