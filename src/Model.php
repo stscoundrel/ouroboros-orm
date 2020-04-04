@@ -86,35 +86,47 @@ class Model
 
     /**
      * Creates new record in DB.
+     *
+     * @param array $attributes to create, optional.
      */
-    public function create() {
+    public function create( $attributes = array() ) {
         global $wpdb;
 
-        $wpdb->insert( self::get_table(), $this->attributes );     
+        $attributes = ! empty( $attributes ) ? $attributes : $this->attributes;
+
+        $wpdb->insert( self::get_table(), $attributes );     
     }
 
     /**
      * Updates record in DB.
+     *
+     * @param array $attributes to update, optional.
      */
-    public function update() {
+    public function update( $attributes = array() ) {
         global $wpdb;
-        
+
+        $attributes = ! empty( $attributes ) ? $attributes : $this->attributes;
+
         $wpdb->update(
             self::get_table(),
-            $this->attributes,
+            $attributes,
             array( self::get_primary_key() => $this->id ),
         );     
     }
 
     /**
      * Delete record from DB.
+     *
+     * @param int $id of record in DB.
      */
-    public function delete() {
+    public function delete( $id = null ) {
         global $wpdb;
+
+        $id = $id ?? $this->id;
 
         $wpdb->delete(
             self::get_table(),
-            array( self::get_primary_key() => $this->id ),
+            array( self::get_primary_key() => $id ),
         );     
     }
 
