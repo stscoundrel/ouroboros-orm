@@ -7,11 +7,14 @@
 
 namespace Silvanus\Ouroboros;
 
+// Contracts.
+use Silvanus\Ouroboros\Contracts\ModelInterface;
+
 /**
  * --> Models custom DB table
  * --> Common data manipulation meethods.
  */
-class Model
+class Model implements ModelInterface
 {   
     /**
      * Table name in database.
@@ -50,7 +53,7 @@ class Model
      *
      * @return string $table name.
      */
-    private static function get_table() {
+    protected static function get_table() {
         global $wpdb;
 
         return $wpdb->prefix . static::$table;
@@ -61,8 +64,17 @@ class Model
      *
      * @return string $primary_key of table.
      */
-    private static function get_primary_key() {
+    protected static function get_primary_key() {
         return self::$primary_key;
+    }
+
+    /**
+     * Retun attributes
+     *
+     * @return array $attributes of instance.
+     */
+    protected function get_attributes() {
+        return $this->attributes;
     }
 
     /**
@@ -92,7 +104,7 @@ class Model
     public function create( $attributes = array() ) {
         global $wpdb;
 
-        $attributes = ! empty( $attributes ) ? $attributes : $this->attributes;
+        $attributes = ! empty( $attributes ) ? $attributes : $this->get_attributes();
 
         $wpdb->insert( self::get_table(), $attributes );     
     }
@@ -105,12 +117,18 @@ class Model
     public function update( $attributes = array() ) {
         global $wpdb;
 
-        $attributes = ! empty( $attributes ) ? $attributes : $this->attributes;
+        $attributes = ! empty( $attributes ) ? $attributes : $this->get_attributes();
+
+        if( array_key_exists( self::get_primary_key() , $attributes ) ):
+            $id = $attributes[ self::get_primary_key() ];
+        else:
+            $id = $this->id;
+        endif;
 
         $wpdb->update(
             self::get_table(),
             $attributes,
-            array( self::get_primary_key() => $this->id ),
+            array( self::get_primary_key() => $id ),
         );     
     }
 
