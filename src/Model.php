@@ -19,28 +19,50 @@ class Model
     protected $table;
 
     /**
+     * Primary key of table.
+     * Default: id.
+     * Used to fetch records by id.
+     */
+    protected $primary_key = 'id';
+
+    /**
      * Model attributes
      * key => value array.
      */
     protected $attributes;
 
     /**
+     * ID of fetched record.
+     */
+    public $id;
+
+    /**
      * Class constructor.
      *
-     * @param array $attributes of model.
+     * @param int $id of record in DB.
      */
-    public function __construct( $attributes = array() ) {
-        if( ! empty( $attributes ) ) :
-            foreach ($attributes as $key => $value) :
-                $this->set( $key, $value );
-            endforeach;
-        endif;
+    public function __construct( $id = null ) {
+        $this->id = $id;      
     }
 
+    /**
+     * Get table name with prefix.
+     *
+     * @return string $table name.
+     */
     private function get_table() {
         global $wpdb;
 
         return $wpdb->prefix . $this->table;
+    }
+
+    /**
+     * Retun primary key.
+     *
+     * @return string $primary_key of table.
+     */
+    private function get_primary_key() {
+        return $this->primary_key;
     }
 
     /**
@@ -54,11 +76,35 @@ class Model
     }
 
     /**
+     * Unset model attribute.
+     *
+     * @param string $key of attribute.
+     */
+    public function unset( $key ) {
+       unset( $this->attributes[ $key ] ) ;
+    }
+
+    /**
      * Creates new record in DB.
      */
     public function create() {
         global $wpdb;
 
         $wpdb->insert( $this->get_table(), $this->attributes );     
+    }
+
+    /**
+     * Updates record in DB.
+     *
+     * @param int $id of record.
+     */
+    public function update() {
+        global $wpdb;
+
+        $wpdb->update(
+            $this->get_table(),
+            $this->attributes,
+            array( 'id' => $this->id ),
+        );     
     }
 }
