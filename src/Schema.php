@@ -92,6 +92,10 @@ class Schema
             $columns .= $name . ' ' . $type . ', ';
         endforeach;
 
+        // Append created_at column.
+        $columns .= 'created_at DATETIME DEFAULT CURRENT_TIMESTAMP, ';
+        $columns .= 'updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP, ';
+
         // Append primary key definition.
         $columns .= 'PRIMARY KEY (' . $this->primary_key . ')';
 

@@ -43,7 +43,7 @@ abstract class Migration
 
         /**
          * Expose our CLI commands through classname keyword
-         * Example: wp [NAME_OF_MIGRATION] up
+         * Example: wp ouroboros migrate [NAME_OF_MIGRATION] up
          */
         \WP_CLI::add_command('ouroboros migrate ' . $this->command, get_called_class());
     }
@@ -71,6 +71,9 @@ abstract class Migration
         $schema = $this->get_schema();
 
         $schema->create();
+
+        \WP_CLI::success('Migration ran, up');
+
     }
 
     /**
@@ -81,5 +84,7 @@ abstract class Migration
         $schema = $this->get_schema();
 
         $schema->drop();
+
+        \WP_CLI::success('Migration ran, down');
     }
 }
