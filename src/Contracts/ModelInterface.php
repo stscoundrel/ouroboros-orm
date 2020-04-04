@@ -16,6 +16,8 @@ interface ModelInterface {
 
 	public function update( $attributes );
 
-	public function delete( $id );	
+	public function delete( $id );
+
+	public function all();	
 
 }

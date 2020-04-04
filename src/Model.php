@@ -177,4 +177,19 @@ class Model implements ModelInterface
 
         return $record;
     }
+
+    /**
+     * Get all records from DB.
+     *
+     * @return array $records found in DB.
+     */
+    public function all() {
+        global $wpdb;        
+
+        $table = self::get_table();
+        
+        $records = $wpdb->get_results( "SELECT * FROM $table", ARRAY_A );
+
+        return $records;
+    }
 }
