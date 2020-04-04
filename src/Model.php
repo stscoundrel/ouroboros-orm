@@ -95,8 +95,6 @@ class Model
 
     /**
      * Updates record in DB.
-     *
-     * @param int $id of record.
      */
     public function update() {
         global $wpdb;
@@ -104,7 +102,19 @@ class Model
         $wpdb->update(
             $this->get_table(),
             $this->attributes,
-            array( 'id' => $this->id ),
+            array( $this->get_primary_key() => $this->id ),
+        );     
+    }
+
+    /**
+     * Delete record in DB.
+     */
+    public function delete() {
+        global $wpdb;
+
+        $wpdb->delete(
+            $this->get_table(),
+            array( $this->get_primary_key() => $this->id ),
         );     
     }
 }
