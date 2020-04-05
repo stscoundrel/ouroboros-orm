@@ -116,7 +116,9 @@ class Model implements ModelInterface
 
         $attributes = ! empty( $attributes ) ? $attributes : $this->get_attributes();
 
-        $wpdb->insert( self::get_table(), $attributes );     
+        $wpdb->insert( self::get_table(), $attributes );
+
+        return $wpdb->insert_id;
     }
 
     /**
