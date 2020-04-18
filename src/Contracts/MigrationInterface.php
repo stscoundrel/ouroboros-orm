@@ -7,15 +7,14 @@
 
 namespace Silvanus\Ouroboros\Contracts;
 
+interface MigrationInterface
+{
 
-interface MigrationInterface {
+    public function up();
 
-	public function up();
+    public function down();
 
-	public function down();
+    public function get_schema();
 
-	public function get_schema();
-
-	public function set_schema();
-
+    public function set_schema();
 }

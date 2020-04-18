@@ -16,19 +16,21 @@ use Silvanus\Ouroboros\Contracts\ModelInterface;
  * --> CRUD methods for abstracting model away from business logic.
  */
 class Repository implements RepositoryInterface
-{   
+{
+
     /**
      * Model of repository.
      */
-    protected $model;   
+    protected $model;
 
     /**
      * Class constructor.
      *
      * @param ModelInterface $model Ouroboros model.
      */
-    public function __construct( ModelInterface $model ) {
-        $this->model = $model;      
+    public function __construct(ModelInterface $model)
+    {
+        $this->model = $model;
     }
 
     /**
@@ -36,7 +38,8 @@ class Repository implements RepositoryInterface
      *
      * @return array $records from db.
      */
-    public function all() {
+    public function all()
+    {
         return $this->model->all();
     }
 
@@ -46,8 +49,9 @@ class Repository implements RepositoryInterface
      * @param int $id of record.
      * @return Model $record from db.
      */
-    public function get( $id ) {
-        return $this->model->find( $id );
+    public function get($id)
+    {
+        return $this->model->find($id);
     }
 
     /**
@@ -56,10 +60,11 @@ class Repository implements RepositoryInterface
      * @param array $attributes of record.
      * @return Model $model that was created.
      */
-    public function create( $attributes ) {
-        $id = $this->model->create( $attributes );
+    public function create($attributes)
+    {
+        $id = $this->model->create($attributes);
 
-        return $this->get( $id );
+        return $this->get($id);
     }
 
     /**
@@ -68,8 +73,9 @@ class Repository implements RepositoryInterface
      * @param int $id of record.
      * @param array $attributes of record.
      */
-    public function update( $attributes ) {
-        $this->model->update( $attributes );
+    public function update($attributes)
+    {
+        $this->model->update($attributes);
     }
 
     /**
@@ -77,7 +83,8 @@ class Repository implements RepositoryInterface
      *
      * @param int $id of record.
      */
-    public function delete( $id ) {
-        $this->model->delete( $id );
+    public function delete($id)
+    {
+        $this->model->delete($id);
     }
 }

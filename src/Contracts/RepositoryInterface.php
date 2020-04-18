@@ -7,17 +7,16 @@
 
 namespace Silvanus\Ouroboros\Contracts;
 
+interface RepositoryInterface
+{
 
-interface RepositoryInterface {
+    public function all();
 
-	public function all();
+    public function get($id);
 
-    public function get( $id );
+    public function create(array $data);
 
-    public function create( array $data );
+    public function update(array $data);
 
-    public function update( array $data );
-
-    public function delete( $id );
-
+    public function delete($id);
 }

@@ -76,7 +76,6 @@ abstract class Migration implements MigrationInterface
         $schema->create();
 
         \WP_CLI::success('Migration ran, up');
-
     }
 
     /**

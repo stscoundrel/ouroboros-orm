@@ -15,7 +15,8 @@ use Silvanus\Ouroboros\Contracts\ModelInterface;
  * --> Common data manipulation meethods.
  */
 class Model implements ModelInterface
-{   
+{
+
     /**
      * Table name in database.
      */
@@ -26,7 +27,7 @@ class Model implements ModelInterface
      * Default: id.
      * Used to fetch records by id.
      */
-    protected static  $primary_key = 'id';
+    protected static $primary_key = 'id';
 
     /**
      * Model attributes
@@ -44,8 +45,9 @@ class Model implements ModelInterface
      *
      * @param int $id of record in DB.
      */
-    public function __construct( $id = null ) {
-        $this->id = $id;      
+    public function __construct($id = null)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -53,7 +55,8 @@ class Model implements ModelInterface
      *
      * @return string $table name.
      */
-    protected static function get_table() {
+    protected static function get_table()
+    {
         global $wpdb;
 
         return $wpdb->prefix . static::$table;
@@ -64,7 +67,8 @@ class Model implements ModelInterface
      *
      * @return string $primary_key of table.
      */
-    protected static function get_primary_key() {
+    protected static function get_primary_key()
+    {
         return self::$primary_key;
     }
 
@@ -73,7 +77,8 @@ class Model implements ModelInterface
      *
      * @return array $attributes of instance.
      */
-    protected function get_attributes() {
+    protected function get_attributes()
+    {
         return $this->attributes;
     }
 
@@ -83,7 +88,8 @@ class Model implements ModelInterface
      * @param string $key of attribute.
      * @return mixed $value of attribute.
      */
-    public function get( $key ) {
+    public function get($key)
+    {
         return $this->attributes[ $key ];
     }
 
@@ -93,7 +99,8 @@ class Model implements ModelInterface
      * @param string $key of attribute.
      * @param mixed $value of attribute.
      */
-    public function set( $key, $value ) {
+    public function set($key, $value)
+    {
         $this->attributes[ $key ] = $value;
     }
 
@@ -102,8 +109,9 @@ class Model implements ModelInterface
      *
      * @param string $key of attribute.
      */
-    public function unset( $key ) {
-       unset( $this->attributes[ $key ] ) ;
+    public function unset($key)
+    {
+        unset($this->attributes[ $key ]) ;
     }
 
     /**
@@ -111,12 +119,13 @@ class Model implements ModelInterface
      *
      * @param array $attributes to create, optional.
      */
-    public function create( $attributes = array() ) {
+    public function create($attributes = array())
+    {
         global $wpdb;
 
-        $attributes = ! empty( $attributes ) ? $attributes : $this->get_attributes();
+        $attributes = ! empty($attributes) ? $attributes : $this->get_attributes();
 
-        $wpdb->insert( self::get_table(), $attributes );
+        $wpdb->insert(self::get_table(), $attributes);
 
         return $wpdb->insert_id;
     }
@@ -126,14 +135,15 @@ class Model implements ModelInterface
      *
      * @param array $attributes to update, optional.
      */
-    public function update( $attributes = array() ) {
+    public function update($attributes = array())
+    {
         global $wpdb;
 
-        $attributes = ! empty( $attributes ) ? $attributes : $this->get_attributes();
+        $attributes = ! empty($attributes) ? $attributes : $this->get_attributes();
 
-        if( array_key_exists( self::get_primary_key() , $attributes ) ):
+        if (array_key_exists(self::get_primary_key(), $attributes)) :
             $id = $attributes[ self::get_primary_key() ];
-        else:
+        else :
             $id = $this->id;
         endif;
 
@@ -141,7 +151,7 @@ class Model implements ModelInterface
             self::get_table(),
             $attributes,
             array( self::get_primary_key() => $id ),
-        );     
+        );
     }
 
     /**
@@ -149,7 +159,8 @@ class Model implements ModelInterface
      *
      * @param int $id of record in DB.
      */
-    public function delete( $id = null ) {
+    public function delete($id = null)
+    {
         global $wpdb;
 
         $id = $id ?? $this->id;
@@ -157,7 +168,7 @@ class Model implements ModelInterface
         $wpdb->delete(
             self::get_table(),
             array( self::get_primary_key() => $id ),
-        );     
+        );
     }
 
     /**
@@ -166,16 +177,17 @@ class Model implements ModelInterface
      * @param int $id of record.
      * @return Model $record by id.
      */
-    public static function find( $id ) {
+    public static function find($id)
+    {
         global $wpdb;
 
-        $id = sanitize_text_field( $id );
+        $id = sanitize_text_field($id);
 
         $primary_key = self::get_primary_key();
 
-        $record = self::where( $primary_key, $id );
+        $record = self::where($primary_key, $id);
 
-        if( count( $record ) === 1 ):
+        if (count($record) === 1) :
             $record = $record[0];
         endif;
 
@@ -189,32 +201,33 @@ class Model implements ModelInterface
      * @param string $column_value in table.
      * @return Model $record by id.
      */
-    public static function where( $column_name, $column_value ) {
+    public static function where($column_name, $column_value)
+    {
         global $wpdb;
 
-        $column_name = sanitize_text_field( $column_name );
-        $column_value = sanitize_text_field( $column_value );
+        $column_name = sanitize_text_field($column_name);
+        $column_value = sanitize_text_field($column_value);
 
         $records = null;
 
         $table       = self::get_table();
         $primary_key = self::get_primary_key();
 
-        if( ! is_numeric( $column_name ) ) :
+        if (! is_numeric($column_name)) :
             $column_value = "'$column_value'";
         endif;
 
-        $results = $wpdb->get_results( "SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A );
+        $results = $wpdb->get_results("SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A);
 
-        if( $results ) :
+        if ($results) :
             $class = get_called_class();
 
-            foreach( $results as $result ):
-                $record = new $class( $result[ $primary_key ] );
+            foreach ($results as $result) :
+                $record = new $class($result[ $primary_key ]);
 
-                foreach( $result as $key => $value ) :
-                    if( $key !== $primary_key ) :
-                        $record->set( $key, $value );
+                foreach ($result as $key => $value) :
+                    if ($key !== $primary_key) :
+                        $record->set($key, $value);
                     endif;
                 endforeach;
 
@@ -230,23 +243,24 @@ class Model implements ModelInterface
      *
      * @return array $records found in DB.
      */
-    public function all() {
-        global $wpdb;        
+    public function all()
+    {
+        global $wpdb;
 
         $records = array();
 
         $table       = self::get_table();
         $primary_key = self::get_primary_key();
 
-        $results = $wpdb->get_results( "SELECT * FROM $table", ARRAY_A );
+        $results = $wpdb->get_results("SELECT * FROM $table", ARRAY_A);
 
-        foreach( $results as $result ):
+        foreach ($results as $result) :
             $class = get_called_class();
-            $record = new $class( $result[ $primary_key ] );
+            $record = new $class($result[ $primary_key ]);
 
-            foreach( $result as $key => $value ) :
-                if( $key !== $primary_key ) :
-                    $record->set( $key, $value );
+            foreach ($result as $key => $value) :
+                if ($key !== $primary_key) :
+                    $record->set($key, $value);
                 endif;
             endforeach;
 
