@@ -169,9 +169,15 @@ class Model implements ModelInterface
     public static function find( $id ) {
         global $wpdb;
 
+        $id = sanitize_text_field( $id );
+
         $primary_key = self::get_primary_key();
 
         $record = self::where( $primary_key, $id );
+
+        if( count( $record ) === 1 ):
+            $record = $record[0];
+        endif;
 
         return $record;
     }
@@ -186,7 +192,10 @@ class Model implements ModelInterface
     public static function where( $column_name, $column_value ) {
         global $wpdb;
 
-        $record = null;
+        $column_name = sanitize_text_field( $column_name );
+        $column_value = sanitize_text_field( $column_value );
+
+        $records = null;
 
         $table       = self::get_table();
         $primary_key = self::get_primary_key();
@@ -195,20 +204,25 @@ class Model implements ModelInterface
             $column_value = "'$column_value'";
         endif;
 
-        $result = $wpdb->get_row( "SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A );
+        $results = $wpdb->get_results( "SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A );
 
-        if( $result ) :
+        if( $results ) :
             $class = get_called_class();
-            $record = new $class( $result[ $primary_key ] );
 
-            foreach( $result as $key => $value ) :
-                if( $key !== $primary_key ) :
-                    $record->set( $key, $value );
-                endif;
+            foreach( $results as $result ):
+                $record = new $class( $result[ $primary_key ] );
+
+                foreach( $result as $key => $value ) :
+                    if( $key !== $primary_key ) :
+                        $record->set( $key, $value );
+                    endif;
+                endforeach;
+
+                $records[] = $record;
             endforeach;
         endif;
 
-        return $record;
+        return $records;
     }
 
     /**
