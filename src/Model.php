@@ -234,7 +234,7 @@ class Model implements ModelInterface, TableInterface
 
         $results = $wpdb->get_results("SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A);
 
-        $records = self::instances_from_array( $results );        
+        $records = self::instances_from_array($results);
 
         return $records;
     }
@@ -252,7 +252,7 @@ class Model implements ModelInterface, TableInterface
 
         $results = $wpdb->get_results("SELECT * FROM $table", ARRAY_A);
 
-        $records = self::instances_from_array( $results );        
+        $records = self::instances_from_array($results);
 
         return $records;
     }
@@ -262,15 +262,16 @@ class Model implements ModelInterface, TableInterface
      * --> If ID, update.
      * --> If not, create new.
      */
-    public function save() {
+    public function save()
+    {
 
         $attributes = $this->get_attributes();
 
-        if( $this->id !== null ) :
+        if ($this->id !== null) :
             $attributes[self::get_primary_key()] = $this->id;
-            self::update( $attributes );
-        else:
-            self::create( $attributes );
+            self::update($attributes);
+        else :
+            self::create($attributes);
         endif;
     }
 
@@ -280,7 +281,7 @@ class Model implements ModelInterface, TableInterface
      * @param array $results from DB.
      * @return $array $records of Models.
      */
-    protected static function instances_from_array( array $results ) : array 
+    protected static function instances_from_array(array $results) : array
     {
         $records     = array();
         $primary_key = self::get_primary_key();

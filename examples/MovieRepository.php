@@ -1,12 +1,12 @@
 <?php
 
-namespace Your\Namespace;
+namespace Your\namespace;
 
 // Ouroboros classes.
 use Silvanus\Ouroboros\Repository;
 
 // Model to be associated with Repository.
-use Your\Namespace\MovieModel;
+use Your\namespace\MovieModel;
 
 class MovieRepository extends Repository
 {
@@ -19,10 +19,11 @@ class MovieRepository extends Repository
     * To hardwire your repository to a certain model,
     * replace constructor like this:
     */
-    public function __construct() {
+    public function __construct()
+    {
         $model = new MovieModel();
 
-        parent::__construct( $model );
+        parent::__construct($model);
     }
 
 

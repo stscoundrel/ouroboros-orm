@@ -1,6 +1,6 @@
 <?php
 
-namespace Your\Namespace;
+namespace Your\namespace;
 
 // Ouroboros classes.
 use Silvanus\Ouroboros\Model;
