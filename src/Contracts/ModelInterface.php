@@ -10,19 +10,19 @@ namespace Silvanus\Ouroboros\Contracts;
 interface ModelInterface
 {
 
-    public function get($key);
+    public function get(string $key);
 
-    public function set($key, $value);
+    public function set(string $key, $value);
 
-    public static function find($id);
+    public static function find(int $id) : ModelInterface;
 
-    public static function where($column_name, $column_value);
+    public static function where(string $column_name, string $column_value) : array;
 
-    public function create($attributes);
+    public function create(array $attributes) : int;
 
-    public function update($attributes);
+    public function update(array $attributes);
 
-    public function delete($id);
+    public function delete(int $id);
 
-    public function all();
+    public function all() : array;
 }

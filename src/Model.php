@@ -88,7 +88,7 @@ class Model implements ModelInterface
      * @param string $key of attribute.
      * @return mixed $value of attribute.
      */
-    public function get($key)
+    public function get(string $key)
     {
         return $this->attributes[ $key ];
     }
@@ -99,7 +99,7 @@ class Model implements ModelInterface
      * @param string $key of attribute.
      * @param mixed $value of attribute.
      */
-    public function set($key, $value)
+    public function set(string $key, $value)
     {
         $this->attributes[ $key ] = $value;
     }
@@ -109,7 +109,7 @@ class Model implements ModelInterface
      *
      * @param string $key of attribute.
      */
-    public function unset($key)
+    public function unset(string $key)
     {
         unset($this->attributes[ $key ]) ;
     }
@@ -119,7 +119,7 @@ class Model implements ModelInterface
      *
      * @param array $attributes to create, optional.
      */
-    public function create($attributes = array())
+    public function create(array $attributes = array()) : int
     {
         global $wpdb;
 
@@ -135,7 +135,7 @@ class Model implements ModelInterface
      *
      * @param array $attributes to update, optional.
      */
-    public function update($attributes = array())
+    public function update(array $attributes = array())
     {
         global $wpdb;
 
@@ -159,7 +159,7 @@ class Model implements ModelInterface
      *
      * @param int $id of record in DB.
      */
-    public function delete($id = null)
+    public function delete(int $id = null)
     {
         global $wpdb;
 
@@ -177,7 +177,7 @@ class Model implements ModelInterface
      * @param int $id of record.
      * @return Model $record by id.
      */
-    public static function find($id)
+    public static function find(int $id) : ModelInterface
     {
         global $wpdb;
 
@@ -201,7 +201,7 @@ class Model implements ModelInterface
      * @param string $column_value in table.
      * @return Model $record by id.
      */
-    public static function where($column_name, $column_value)
+    public static function where(string $column_name, string $column_value) : array
     {
         global $wpdb;
 
@@ -227,7 +227,7 @@ class Model implements ModelInterface
      *
      * @return array $records found in DB.
      */
-    public function all()
+    public function all() : array
     {
         global $wpdb;
 
@@ -246,7 +246,8 @@ class Model implements ModelInterface
      * @param array $results from DB.
      * @return $array $records of Models.
      */
-    private function instances_from_array( array $results ) {
+    protected static function instances_from_array( array $results ) : array 
+    {
         $records     = array();
         $primary_key = self::get_primary_key();
 
