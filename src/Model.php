@@ -208,8 +208,6 @@ class Model implements ModelInterface
         $column_name = sanitize_text_field($column_name);
         $column_value = sanitize_text_field($column_value);
 
-        $records = null;
-
         $table       = self::get_table();
         $primary_key = self::get_primary_key();
 
@@ -219,21 +217,7 @@ class Model implements ModelInterface
 
         $results = $wpdb->get_results("SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A);
 
-        if ($results) :
-            $class = get_called_class();
-
-            foreach ($results as $result) :
-                $record = new $class($result[ $primary_key ]);
-
-                foreach ($result as $key => $value) :
-                    if ($key !== $primary_key) :
-                        $record->set($key, $value);
-                    endif;
-                endforeach;
-
-                $records[] = $record;
-            endforeach;
-        endif;
+        $records = self::instances_from_array( $results );        
 
         return $records;
     }
@@ -247,12 +231,24 @@ class Model implements ModelInterface
     {
         global $wpdb;
 
-        $records = array();
-
-        $table       = self::get_table();
-        $primary_key = self::get_primary_key();
+        $table   = self::get_table();
 
         $results = $wpdb->get_results("SELECT * FROM $table", ARRAY_A);
+
+        $records = self::instances_from_array( $results );        
+
+        return $records;
+    }
+
+    /**
+     * Return model instances created from (DB) array.
+     *
+     * @param array $results from DB.
+     * @return $array $records of Models.
+     */
+    private function instances_from_array( array $results ) {
+        $records     = array();
+        $primary_key = self::get_primary_key();
 
         foreach ($results as $result) :
             $class = get_called_class();
