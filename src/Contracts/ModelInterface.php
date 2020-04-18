@@ -18,11 +18,11 @@ interface ModelInterface
 
     public static function where(string $column_name, string $column_value) : array;
 
-    public function create(array $attributes) : int;
+    public static function create(array $attributes) : int;
 
-    public function update(array $attributes);
+    public static function update(array $attributes);
 
-    public function delete(int $id);
+    public static function delete(int $id);
 
-    public function all() : array;
+    public static function all() : array;
 }

@@ -9,12 +9,13 @@ namespace Silvanus\Ouroboros;
 
 // Contracts.
 use Silvanus\Ouroboros\Contracts\ModelInterface;
+use Silvanus\Ouroboros\Contracts\TableInterface;
 
 /**
  * --> Models custom DB table
  * --> Common data manipulation meethods.
  */
-class Model implements ModelInterface
+class Model implements ModelInterface, TableInterface
 {
 
     /**
@@ -55,7 +56,7 @@ class Model implements ModelInterface
      *
      * @return string $table name.
      */
-    protected static function get_table()
+    public static function get_table() : string
     {
         global $wpdb;
 
@@ -63,13 +64,33 @@ class Model implements ModelInterface
     }
 
     /**
+     * set table name
+     *
+     * @param string $table name.
+     */
+    public static function set_table(string $table)
+    {
+        static::$table = $table;
+    }
+
+    /**
      * Retun primary key.
      *
      * @return string $primary_key of table.
      */
-    protected static function get_primary_key()
+    public static function get_primary_key() : string
     {
-        return self::$primary_key;
+        return static::$primary_key;
+    }
+
+    /**
+     * Set primary key.
+     *
+     * @param string $primary_key of table.
+     */
+    public static function set_primary_key(string $primary_key)
+    {
+        static::$primary_key = $primary_key;
     }
 
     /**
@@ -119,7 +140,7 @@ class Model implements ModelInterface
      *
      * @param array $attributes to create, optional.
      */
-    public function create(array $attributes = array()) : int
+    public static function create(array $attributes = array()) : int
     {
         global $wpdb;
 
@@ -135,7 +156,7 @@ class Model implements ModelInterface
      *
      * @param array $attributes to update, optional.
      */
-    public function update(array $attributes = array())
+    public static function update(array $attributes = array())
     {
         global $wpdb;
 
@@ -159,7 +180,7 @@ class Model implements ModelInterface
      *
      * @param int $id of record in DB.
      */
-    public function delete(int $id = null)
+    public static function delete(int $id = null)
     {
         global $wpdb;
 
@@ -227,7 +248,7 @@ class Model implements ModelInterface
      *
      * @return array $records found in DB.
      */
-    public function all() : array
+    public static function all() : array
     {
         global $wpdb;
 

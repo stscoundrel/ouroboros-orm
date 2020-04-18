@@ -7,11 +7,14 @@
 
 namespace Silvanus\Ouroboros;
 
+// Contracts.
+use Silvanus\Ouroboros\Contracts\TableInterface;
+
 /**
  * --> Define table name
  * --> Define table structure
  */
-class Schema
+class Schema implements TableInterface
 {
 
     /**
@@ -19,7 +22,7 @@ class Schema
      *
      * @var string
      */
-    protected $table;
+    protected static $table;
 
     /**
      * Primary key
@@ -27,7 +30,7 @@ class Schema
      *
      * @var string
      */
-    protected $primary_key;
+    protected static $primary_key;
 
     /**
      * Table columns
@@ -47,7 +50,7 @@ class Schema
         global $wpdb;
 
         // Set table name.
-        $this->table = $wpdb->prefix . $table;
+        static::$table = $wpdb->prefix . $table;
 
         // Set columns.
         foreach ($columns as $name => $type) :
@@ -55,7 +58,47 @@ class Schema
         endforeach;
 
         // Set primary key, if defined.
-        $this->primary_key = $primary_key == false ? 'id' : $primary_key;
+        static::$primary_key = $primary_key == false ? 'id' : $primary_key;
+    }
+
+    /**
+     * Get table name with prefix.
+     *
+     * @return string $table name.
+     */
+    public static function get_table() : string
+    {
+        return static::$table;
+    }
+
+    /**
+     * set table name
+     *
+     * @param string $table name.
+     */
+    public static function set_table(string $table)
+    {
+        static::$table = $table;
+    }
+
+    /**
+     * Retun primary key.
+     *
+     * @return string $primary_key of table.
+     */
+    public static function get_primary_key() : string
+    {
+        return static::$primary_key;
+    }
+
+    /**
+     * Set primary key.
+     *
+     * @param string $primary_key of table.
+     */
+    public static function set_primary_key(string $primary_key)
+    {
+        static::$primary_key = $primary_key;
     }
 
     /**
@@ -97,7 +140,7 @@ class Schema
         $columns .= 'updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP, ';
 
         // Append primary key definition.
-        $columns .= 'PRIMARY KEY (' . $this->primary_key . ')';
+        $columns .= 'PRIMARY KEY (' . self::get_primary_key() . ')';
 
         return $columns;
     }
@@ -114,7 +157,7 @@ class Schema
         $charset_collate = $wpdb->get_charset_collate();
 
         // Parse SQL from columns.
-        $sql = 'CREATE TABLE ' . $this->table . ' ( ' . $this->get_columns_sql() . ' ) ' . $charset_collate . ';';
+        $sql = 'CREATE TABLE ' . self::get_table() . ' ( ' . $this->get_columns_sql() . ' ) ' . $charset_collate . ';';
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
@@ -132,7 +175,7 @@ class Schema
         $charset_collate = $wpdb->get_charset_collate();
 
         // Parse SQL from columns.
-        $sql = 'DROP TABLE  IF EXISTS ' . $this->table . ';';
+        $sql = 'DROP TABLE  IF EXISTS ' . self::get_table() . ';';
 
         // Execute using WPDB.
         $wpdb->query($sql);
