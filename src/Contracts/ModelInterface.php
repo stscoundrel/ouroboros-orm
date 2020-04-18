@@ -24,5 +24,7 @@ interface ModelInterface
 
     public static function delete(int $id);
 
+    public function save();
+
     public static function all() : array;
 }

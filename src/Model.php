@@ -258,6 +258,23 @@ class Model implements ModelInterface, TableInterface
     }
 
     /**
+     * Persist current instance to DB.
+     * --> If ID, update.
+     * --> If not, create new.
+     */
+    public function save() {
+
+        $attributes = $this->get_attributes();
+
+        if( $this->id !== null ) :
+            $attributes[self::get_primary_key()] = $this->id;
+            self::update( $attributes );
+        else:
+            self::create( $attributes );
+        endif;
+    }
+
+    /**
      * Return model instances created from (DB) array.
      *
      * @param array $results from DB.
