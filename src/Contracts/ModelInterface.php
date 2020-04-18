@@ -16,6 +16,8 @@ interface ModelInterface {
 
 	public static function find( $id );
 
+	public static function where( $column_name, $column_value );
+
 	public function create( $attributes );
 
 	public function update( $attributes );

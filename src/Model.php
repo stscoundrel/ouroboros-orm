@@ -161,7 +161,7 @@ class Model implements ModelInterface
     }
 
     /**
-     * Find record from DB.
+     * Find record from DB by id.
      *
      * @param int $id of record.
      * @return Model $record by id.
@@ -169,12 +169,33 @@ class Model implements ModelInterface
     public static function find( $id ) {
         global $wpdb;
 
+        $primary_key = self::get_primary_key();
+
+        $record = self::where( $primary_key, $id );
+
+        return $record;
+    }
+
+    /**
+     * Find record from DB by key & value pair.
+     *
+     * @param string $column_name in table.
+     * @param string $column_value in table.
+     * @return Model $record by id.
+     */
+    public static function where( $column_name, $column_value ) {
+        global $wpdb;
+
         $record = null;
 
         $table       = self::get_table();
         $primary_key = self::get_primary_key();
 
-        $result = $wpdb->get_row( "SELECT * FROM $table WHERE $primary_key = $id", ARRAY_A );
+        if( ! is_numeric( $column_name ) ) :
+            $column_value = "'$column_value'";
+        endif;
+
+        $result = $wpdb->get_row( "SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A );
 
         if( $result ) :
             $class = get_called_class();
