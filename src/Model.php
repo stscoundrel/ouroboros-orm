@@ -11,6 +11,8 @@ namespace Silvanus\Ouroboros;
 use Silvanus\Ouroboros\Contracts\ModelInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
 
+use \Exception;
+
 /**
  * --> Models custom DB table
  * --> Common data manipulation meethods.
@@ -144,8 +146,6 @@ class Model implements ModelInterface, TableInterface
     {
         global $wpdb;
 
-        $attributes = ! empty($attributes) ? $attributes : $this->get_attributes();
-
         $wpdb->insert(self::get_table(), $attributes);
 
         return $wpdb->insert_id;
@@ -160,12 +160,10 @@ class Model implements ModelInterface, TableInterface
     {
         global $wpdb;
 
-        $attributes = ! empty($attributes) ? $attributes : $this->get_attributes();
-
         if (array_key_exists(self::get_primary_key(), $attributes)) :
             $id = $attributes[ self::get_primary_key() ];
         else :
-            $id = $this->id;
+            throw new Exception('ID not provided in arguments, can not update.');
         endif;
 
         $wpdb->update(
@@ -180,11 +178,9 @@ class Model implements ModelInterface, TableInterface
      *
      * @param int $id of record in DB.
      */
-    public static function delete(int $id = null)
+    public static function delete(int $id)
     {
         global $wpdb;
-
-        $id = $id ?? $this->id;
 
         $wpdb->delete(
             self::get_table(),
