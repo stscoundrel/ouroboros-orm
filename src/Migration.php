@@ -9,6 +9,7 @@ namespace Silvanus\Ouroboros;
 
 // Contracts.
 use Silvanus\Ouroboros\Contracts\MigrationInterface;
+use Silvanus\Ouroboros\Contracts\SchemaInterface;
 
 /**
  * --> Receive table schema
@@ -61,7 +62,7 @@ abstract class Migration implements MigrationInterface
      *
      * @return Schema $schema object of table.
      */
-    public function get_schema()
+    public function get_schema() : SchemaInterface
     {
         return $this->schema;
     }

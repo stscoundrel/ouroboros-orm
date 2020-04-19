@@ -14,7 +14,7 @@ interface MigrationInterface
 
     public function down();
 
-    public function get_schema();
+    public function get_schema() : SchemaInterface;
 
     public function set_schema();
 }
