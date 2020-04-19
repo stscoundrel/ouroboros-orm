@@ -8,13 +8,14 @@
 namespace Silvanus\Ouroboros;
 
 // Contracts.
+use Silvanus\Ouroboros\Contracts\SchemaInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
 
 /**
  * --> Define table name
  * --> Define table structure
  */
-class Schema implements TableInterface
+class Schema implements SchemaInterface, TableInterface
 {
 
     /**
@@ -107,9 +108,20 @@ class Schema implements TableInterface
      * @param string $name of column.
      * @param string $type of column.
      */
-    public function add_column($name, $type)
+    public function add_column(string $name, string $type)
     {
         $this->columns[$name] = $type;
+    }
+
+    /**
+     * Get column from columns
+     *
+     * @param string $name of column.
+     * @return string $type of column.
+     */
+    public function get_column(string $name) : string
+    {
+        return $this->columns[$name];
     }
 
     /**
@@ -117,7 +129,7 @@ class Schema implements TableInterface
      *
      * @return array $columns of table;
      */
-    public function get_columns()
+    public function get_columns() : array
     {
         return $this->columns;
     }
