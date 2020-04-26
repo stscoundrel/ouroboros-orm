@@ -74,7 +74,7 @@ abstract class Migration implements MigrationInterface
     {
         $schema = $this->get_schema();
 
-        $schema->create();
+        $schema::create();
 
         \WP_CLI::success('Migration ran, up');
     }
@@ -86,7 +86,7 @@ abstract class Migration implements MigrationInterface
     {
         $schema = $this->get_schema();
 
-        $schema->drop();
+        $schema::drop();
 
         \WP_CLI::success('Migration ran, down');
     }

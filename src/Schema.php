@@ -38,7 +38,7 @@ class Schema implements SchemaInterface, TableInterface
      *
      * @var array
      */
-    protected $columns;
+    protected static $columns;
 
     /**
      * Class constructor
@@ -46,20 +46,34 @@ class Schema implements SchemaInterface, TableInterface
      * @param string $table name.
      * @param array $columns key/value list,.
      */
-    public function __construct($table, $columns, $primary_key = false)
+    public function __construct($table = null, $columns = null, $primary_key = false)
     {
         global $wpdb;
 
-        // Set table name.
-        static::$table = $wpdb->prefix . $table;
+        if( $table ) :
+            // Set table name.
+            static::$table = self::set_table($table);
+        endif;
 
-        // Set columns.
-        foreach ($columns as $name => $type) :
-            $this->add_column($name, $type);
-        endforeach;
+        if( $columns ) :
+            // Set columns.
+            foreach ($columns as $name => $type) :
+                self::add_column($name, $type);
+            endforeach;
+        endif;
 
         // Set primary key, if defined.
         static::$primary_key = $primary_key == false ? 'id' : $primary_key;
+    }
+
+    /**
+     * Get table name
+     *
+     * @return string $table name.
+     */
+    public static function get_table() : string
+    {
+        return static::$table;
     }
 
     /**
@@ -67,9 +81,10 @@ class Schema implements SchemaInterface, TableInterface
      *
      * @return string $table name.
      */
-    public static function get_table() : string
+    public static function get_table_with_prefix() : string
     {
-        return static::$table;
+        global $wpdb;
+        return $wpdb->prefix . static::$table;
     }
 
     /**
@@ -108,9 +123,9 @@ class Schema implements SchemaInterface, TableInterface
      * @param string $name of column.
      * @param string $type of column.
      */
-    public function add_column(string $name, string $type)
+    public static function add_column(string $name, string $type)
     {
-        $this->columns[$name] = $type;
+       static::$columns[$name] = $type;
     }
 
     /**
@@ -119,9 +134,9 @@ class Schema implements SchemaInterface, TableInterface
      * @param string $name of column.
      * @return string $type of column.
      */
-    public function get_column(string $name) : string
+    public static function get_column(string $name) : string
     {
-        return $this->columns[$name];
+        return static::$columns[$name];
     }
 
     /**
@@ -129,9 +144,9 @@ class Schema implements SchemaInterface, TableInterface
      *
      * @return array $columns of table;
      */
-    public function get_columns() : array
+    public static function get_columns() : array
     {
-        return $this->columns;
+        return static::$columns;
     }
 
     /**
@@ -139,11 +154,11 @@ class Schema implements SchemaInterface, TableInterface
      *
      * @return string $columns in sql format.
      */
-    public function get_columns_sql()
+    public static function get_columns_sql()
     {
         $columns = '';
 
-        foreach ($this->get_columns() as $name => $type) :
+        foreach (self::get_columns() as $name => $type) :
             $columns .= $name . ' ' . $type . ', ';
         endforeach;
 
@@ -162,14 +177,14 @@ class Schema implements SchemaInterface, TableInterface
      * How WP wants this done:
      * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
      */
-    public function create()
+    public static function create()
     {
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
 
         // Parse SQL from columns.
-        $sql = 'CREATE TABLE ' . self::get_table() . ' ( ' . $this->get_columns_sql() . ' ) ' . $charset_collate . ';';
+        $sql = 'CREATE TABLE ' . self::get_table_with_prefix() . ' ( ' . self::get_columns_sql() . ' ) ' . $charset_collate . ';';
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
@@ -180,14 +195,14 @@ class Schema implements SchemaInterface, TableInterface
     /**
      * Drop table with all data.
      */
-    public function drop()
+    public static function drop()
     {
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
 
         // Parse SQL from columns.
-        $sql = 'DROP TABLE  IF EXISTS ' . self::get_table() . ';';
+        $sql = 'DROP TABLE  IF EXISTS ' . self::get_table_with_prefix() . ';';
 
         // Execute using WPDB.
         $wpdb->query($sql);

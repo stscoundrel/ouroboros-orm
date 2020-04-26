@@ -10,13 +10,13 @@ namespace Silvanus\Ouroboros\Contracts;
 interface SchemaInterface
 {
 
-    public function add_column(string $name, string $type);
+    public static function add_column(string $name, string $type);
 
-    public function get_column(string $name) : string;
+    public static function get_column(string $name) : string;
 
-    public function get_columns() : array;
+    public static function get_columns() : array;
 
-    public function create();
+    public static function create();
 
-    public function drop();
+    public static function drop();
 }
