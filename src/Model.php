@@ -39,6 +39,12 @@ class Model implements ModelInterface, TableInterface
     protected $attributes;
 
     /**
+     * Allowed attributes
+     * List of keys to be expected in DB.
+     */
+    protected static $allowed_attributes;
+
+    /**
      * ID of fetched record.
      */
     public $id;
@@ -124,7 +130,9 @@ class Model implements ModelInterface, TableInterface
      */
     public function set(string $key, $value)
     {
-        $this->attributes[ $key ] = $value;
+        if( static::is_allowed($key) ) :
+            $this->attributes[ $key ] = $value;
+        endif;
     }
 
     /**
@@ -138,13 +146,48 @@ class Model implements ModelInterface, TableInterface
     }
 
     /**
+     * Check if given key is allowed.
+     * Only allowed keys can be set to attributes.
+     *
+     * @param string $key of field.
+     * @return bool.
+     */
+    public static function is_allowed(string $key) : bool
+    {
+        return in_array($key, static::$allowed_attributes);
+    }
+
+    /**
+     * Filter array of client-given attributes.
+     * Return only allowed for this model.
+     *
+     * @param array $attributes to filter.
+     * @return array $allowed_attributes that have been filtered.
+     */
+    public static function filter_attributes(array $attributes) : array
+    {
+        $allowed_attributes = array();
+
+        foreach( $attributes as $key => $value ) :
+            if( self::is_allowed( $key ) ) :
+                $allowed_attributes[$key] = $value;
+            endif;
+        endforeach;
+
+        return $allowed_attributes;
+    }
+
+    /**
      * Creates new record in DB.
      *
      * @param array $attributes to create, optional.
      */
     public static function create(array $attributes = array()) : int
     {
+
         global $wpdb;
+
+        $attributes = self::filter_attributes( $attributes );
 
         $wpdb->insert(self::get_table(), $attributes);
 
@@ -165,6 +208,8 @@ class Model implements ModelInterface, TableInterface
         else :
             throw new Exception('ID not provided in arguments, can not update.');
         endif;
+
+        $attributes = self::filter_attributes( $attributes );
 
         $wpdb->update(
             self::get_table(),
