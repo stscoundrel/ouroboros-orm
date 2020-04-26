@@ -50,12 +50,12 @@ class Schema implements SchemaInterface, TableInterface
     {
         global $wpdb;
 
-        if( $table ) :
+        if ($table) :
             // Set table name.
             static::$table = self::set_table($table);
         endif;
 
-        if( $columns ) :
+        if ($columns) :
             // Set columns.
             foreach ($columns as $name => $type) :
                 self::add_column($name, $type);
@@ -125,7 +125,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function add_column(string $name, string $type)
     {
-       static::$columns[$name] = $type;
+        static::$columns[$name] = $type;
     }
 
     /**

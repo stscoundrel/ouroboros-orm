@@ -130,7 +130,7 @@ class Model implements ModelInterface, TableInterface
      */
     public function set(string $key, $value)
     {
-        if( static::is_allowed($key) ) :
+        if (static::is_allowed($key)) :
             $this->attributes[ $key ] = $value;
         endif;
     }
@@ -168,8 +168,8 @@ class Model implements ModelInterface, TableInterface
     {
         $allowed_attributes = array();
 
-        foreach( $attributes as $key => $value ) :
-            if( self::is_allowed( $key ) ) :
+        foreach ($attributes as $key => $value) :
+            if (self::is_allowed($key)) :
                 $allowed_attributes[$key] = $value;
             endif;
         endforeach;
@@ -187,7 +187,7 @@ class Model implements ModelInterface, TableInterface
 
         global $wpdb;
 
-        $attributes = self::filter_attributes( $attributes );
+        $attributes = self::filter_attributes($attributes);
 
         $wpdb->insert(self::get_table(), $attributes);
 
@@ -209,7 +209,7 @@ class Model implements ModelInterface, TableInterface
             throw new Exception('ID not provided in arguments, can not update.');
         endif;
 
-        $attributes = self::filter_attributes( $attributes );
+        $attributes = self::filter_attributes($attributes);
 
         $wpdb->update(
             self::get_table(),
