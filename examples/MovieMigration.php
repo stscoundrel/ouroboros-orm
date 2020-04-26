@@ -4,7 +4,10 @@ namespace Your\namespace;
 
 // Ouroboros classes.
 use Silvanus\Ouroboros\Migration;
-use Silvanus\Ouroboros\Schema;
+
+
+// Local Schema class
+use Your\namespace\MovieSchema;
 
 /**
  * MovieMigration class to be called in CLI.
@@ -24,12 +27,15 @@ class MovieMigration extends Migration
      */
     public function set_schema()
     {
+        $this->schema = new MovieSchema();
 
-        $columns = array(
-            'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
-            'name' => 'varchar(255) NOT NULL',
-        );
+        // Alternatively, you can create new Schema on spot.
 
-        $this->schema = new Schema('movies', $columns);
+        // $columns = array(
+        //     'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
+        //     'name' => 'varchar(255) NOT NULL',
+        // );
+
+        // $this->schema = new Schema('movies', $columns);
     }
 }
