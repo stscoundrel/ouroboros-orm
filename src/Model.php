@@ -11,7 +11,10 @@ namespace Silvanus\Ouroboros;
 use Silvanus\Ouroboros\Contracts\ModelInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
 
-use \Exception;
+// Exceptions.
+use Silvanus\Ouroboros\Exceptions\Model\NoTableSetException;
+use Silvanus\Ouroboros\Exceptions\Model\NoAllowedAttributesException;
+use Silvanus\Ouroboros\Exceptions\Model\MissingIDException;
 
 /**
  * --> Models custom DB table
@@ -66,6 +69,10 @@ class Model implements ModelInterface, TableInterface
      */
     public static function get_table() : string
     {
+        if( ! static::$table ) :
+            throw new NoTableSetException();
+        endif;
+
         global $wpdb;
 
         return $wpdb->prefix . static::$table;
@@ -154,6 +161,10 @@ class Model implements ModelInterface, TableInterface
      */
     public static function is_allowed(string $key) : bool
     {
+        if( ! static::$allowed_attributes ) :
+            throw new NoAllowedAttributesException();
+        endif;
+
         return in_array($key, static::$allowed_attributes);
     }
 
@@ -206,7 +217,7 @@ class Model implements ModelInterface, TableInterface
         if (array_key_exists(self::get_primary_key(), $attributes)) :
             $id = $attributes[ self::get_primary_key() ];
         else :
-            throw new Exception('ID not provided in arguments, can not update.');
+            throw new MissingIDException();
         endif;
 
         $attributes = self::filter_attributes($attributes);
