@@ -67,7 +67,7 @@ abstract class Migration implements MigrationInterface
      */
     public function get_schema() : SchemaInterface
     {
-        if( ! $this->schema ) :
+        if (! $this->schema) :
             throw new NoSchemaSetException();
         endif;
         

@@ -69,7 +69,7 @@ class Model implements ModelInterface, TableInterface
      */
     public static function get_table() : string
     {
-        if( ! static::$table ) :
+        if (! static::$table) :
             throw new NoTableSetException();
         endif;
 
@@ -161,7 +161,7 @@ class Model implements ModelInterface, TableInterface
      */
     public static function is_allowed(string $key) : bool
     {
-        if( ! static::$allowed_attributes ) :
+        if (! static::$allowed_attributes) :
             throw new NoAllowedAttributesException();
         endif;
 

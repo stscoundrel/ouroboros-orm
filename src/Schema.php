@@ -76,7 +76,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function get_table() : string
     {
-        if( ! static::$table ) :
+        if (! static::$table) :
             throw new NoTableSetException();
         endif;
         
