@@ -10,7 +10,7 @@ namespace Silvanus\Ouroboros\Exceptions\Model;
 use \Exception;
 
 /**
- * Handle exception for missing model allowed_attributes
+ * Handle exception for missing ID argument.
  */
 class MissingIDException extends Exception
 {

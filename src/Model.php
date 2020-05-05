@@ -12,7 +12,7 @@ use Silvanus\Ouroboros\Contracts\ModelInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
 
 // Exceptions.
-use Silvanus\Ouroboros\Exceptions\Model\NoTableSetException;
+use Silvanus\Ouroboros\Exceptions\NoTableSetException;
 use Silvanus\Ouroboros\Exceptions\Model\NoAllowedAttributesException;
 use Silvanus\Ouroboros\Exceptions\Model\MissingIDException;
 

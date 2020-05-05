@@ -11,6 +11,9 @@ namespace Silvanus\Ouroboros;
 use Silvanus\Ouroboros\Contracts\SchemaInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
 
+// Exceptions.
+use Silvanus\Ouroboros\Exceptions\NoTableSetException;
+
 /**
  * --> Define table name
  * --> Define table structure
@@ -73,6 +76,10 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function get_table() : string
     {
+        if( ! static::$table ) :
+            throw new NoTableSetException();
+        endif;
+        
         return static::$table;
     }
 

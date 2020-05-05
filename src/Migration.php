@@ -11,6 +11,9 @@ namespace Silvanus\Ouroboros;
 use Silvanus\Ouroboros\Contracts\MigrationInterface;
 use Silvanus\Ouroboros\Contracts\SchemaInterface;
 
+// Exceptions.
+use Silvanus\Ouroboros\Exceptions\Migration\NoSchemaSetException;
+
 /**
  * --> Receive table schema
  * --> Create table based on schema
@@ -64,6 +67,10 @@ abstract class Migration implements MigrationInterface
      */
     public function get_schema() : SchemaInterface
     {
+        if( ! $this->schema ) :
+            throw new NoSchemaSetException();
+        endif;
+        
         return $this->schema;
     }
 
