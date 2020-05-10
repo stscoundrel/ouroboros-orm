@@ -39,12 +39,17 @@ class RestController implements RestControllerInterface
     protected $resource;
 
     public function __construct(ModelInterface $model)
-    {   
-        $resource = new ReflectionClass( $model );
+    {
+        $this->model = $model;
 
-        $this->model     = $model;
-        $this->namespace = 'ouroboros';
-        $this->resource  = strtolower( $resource->getShortName() );
+        if( ! $this->namespace ) :
+            $this->namespace = 'ouroboros';
+        endif;
+
+        if( ! $this->resource ) :
+            $resource        = new ReflectionClass( $model );
+            $this->resource  = strtolower( $resource->getShortName() );
+        endif;
     }
 
     /**
