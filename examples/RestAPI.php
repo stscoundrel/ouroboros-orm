@@ -4,26 +4,28 @@
 use Silvanus\Ouroboros\RestController;
 
 // Your model class.
-use Your\Namespace\Movie;
+use Your\namespace\Movie;
 
-class App 
+class App
 {
 
     /**
      * Class constructor.
      * Whichever place you want to add_action in.
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Register rest endpoints.
-        add_action( 'rest_api_init', array( $this, 'register_movies_endpoint' ) );
+        add_action('rest_api_init', array( $this, 'register_movies_endpoint' ));
     }
 
-    public function register_movies_endpoint() {
+    public function register_movies_endpoint()
+    {
         // Get Movie model instance.
         $model = new Movie();
 
         // Associate Ouroboros REST Controller with model.
-        $movies_controller = new RestController( $model );
+        $movies_controller = new RestController($model);
 
         /**
         * Register endpoints.

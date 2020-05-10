@@ -42,13 +42,13 @@ class RestController implements RestControllerInterface
     {
         $this->model = $model;
 
-        if( ! $this->namespace ) :
+        if (! $this->namespace) :
             $this->namespace = 'ouroboros';
         endif;
 
-        if( ! $this->resource ) :
-            $resource        = new ReflectionClass( $model );
-            $this->resource  = strtolower( $resource->getShortName() );
+        if (! $this->resource) :
+            $resource        = new ReflectionClass($model);
+            $this->resource  = strtolower($resource->getShortName());
         endif;
     }
 
@@ -72,8 +72,9 @@ class RestController implements RestControllerInterface
     public function register_routes()
     {
         register_rest_route(
-            $this->namespace, '/' . $this->resource,
-            array(            
+            $this->namespace,
+            '/' . $this->resource,
+            array(
                 array(
                     'methods'   => 'GET',
                     'callback'  => array($this, 'get_items'),
@@ -82,7 +83,8 @@ class RestController implements RestControllerInterface
         );
 
         register_rest_route(
-            $this->namespace, '/' . $this->resource . '/(?P<id>[\d]+)',
+            $this->namespace,
+            '/' . $this->resource . '/(?P<id>[\d]+)',
             array(
                 array(
                     'methods'   => 'GET',
@@ -103,8 +105,8 @@ class RestController implements RestControllerInterface
 
         $results =  $this->get_model()->all();
 
-        foreach( $results as $result ) :
-            $items[] = $this->prepare_item( $result );
+        foreach ($results as $result) :
+            $items[] = $this->prepare_item($result);
         endforeach;
 
         return $items;
@@ -121,7 +123,7 @@ class RestController implements RestControllerInterface
 
         $result = $this->get_model()->find($id);
 
-        return $this->prepare_item( $result );
+        return $this->prepare_item($result);
     }
 
     /**
@@ -130,13 +132,13 @@ class RestController implements RestControllerInterface
      * @param ModelInterface $model to handle.
      * @return array $item data in JSONable format.
      */
-    public function prepare_item( ModelInterface $model ) : array
+    public function prepare_item(ModelInterface $model) : array
     {
         $item = array(
             'id' => (int)$model->id,
         );
 
-        foreach($model->get_attributes() as $key => $value):
+        foreach ($model->get_attributes() as $key => $value) :
             $item[ $key ] = $value;
         endforeach;
 
