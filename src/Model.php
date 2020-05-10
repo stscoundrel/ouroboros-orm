@@ -113,7 +113,7 @@ class Model implements ModelInterface, TableInterface
      *
      * @return array $attributes of instance.
      */
-    protected function get_attributes()
+    public function get_attributes()
     {
         return $this->attributes;
     }
