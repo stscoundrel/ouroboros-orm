@@ -57,7 +57,7 @@ class Model implements ModelInterface, TableInterface
      *
      * @param int $id of record in DB.
      */
-    public function __construct($id = null)
+    public function __construct(?int $id = null)
     {
         $this->id = $id;
     }
