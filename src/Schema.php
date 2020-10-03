@@ -7,6 +7,9 @@
 
 namespace Silvanus\Ouroboros;
 
+// DB access.
+use Silvanus\Ouroboros\DatabaseAccess;
+
 // Contracts.
 use Silvanus\Ouroboros\Contracts\SchemaInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
@@ -51,7 +54,6 @@ class Schema implements SchemaInterface, TableInterface
      */
     public function __construct($table = null, $columns = null, $primary_key = false)
     {
-        global $wpdb;
 
         if ($table) :
             // Set table name.
@@ -90,8 +92,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function get_table_with_prefix() : string
     {
-        global $wpdb;
-        return $wpdb->prefix . static::$table;
+        return DatabaseAccess::get_prefix() . static::$table;
     }
 
     /**
@@ -186,17 +187,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function create()
     {
-        global $wpdb;
-
-        $charset_collate = $wpdb->get_charset_collate();
-
-        // Parse SQL from columns.
-        $sql = 'CREATE TABLE ' . self::get_table_with_prefix() . ' ( ' . self::get_columns_sql() . ' ) ' . $charset_collate . ';';
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        // Execute using WordPress functions.
-        dbDelta($sql);
+        DatabaseAccess::create_table(self::get_table_with_prefix(), self::get_columns_sql());
     }
 
     /**
@@ -204,14 +195,6 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function drop()
     {
-        global $wpdb;
-
-        $charset_collate = $wpdb->get_charset_collate();
-
-        // Parse SQL from columns.
-        $sql = 'DROP TABLE  IF EXISTS ' . self::get_table_with_prefix() . ';';
-
-        // Execute using WPDB.
-        $wpdb->query($sql);
+        DatabaseAccess::drop_table(self::get_table_with_prefix());
     }
 }
