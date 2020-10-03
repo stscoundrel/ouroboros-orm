@@ -4,7 +4,8 @@
     "type": "library",
     "require": {},
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.5",
+        "phpunit/phpunit": "^9"
     },
     "license": "MIT",
     "authors": [
@@ -16,11 +17,15 @@
     ],
     "autoload": {
       "psr-4": {
-        "Silvanus\\Ouroboros\\": "src/"
+        "Silvanus\\Ouroboros\\": "src/",
+        "Silvanus\\Ouroboros\\Tests\\": "tests/"
       }
     },
     "scripts": {
       "test": [
+        "phpunit --testdox"
+      ],
+      "lint": [
         "phpcs"
       ],
       "fix": [
