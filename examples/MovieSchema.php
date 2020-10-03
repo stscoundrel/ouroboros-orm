@@ -12,7 +12,7 @@ class MovieSchema extends Schema
      * Name of database table to be created.
      * No prefix needed, Schema will figure it out.
      */
-    protected static $table = 'movie';
+    protected static $table = 'movies';
 
     /**
      * Columns to be created for table.

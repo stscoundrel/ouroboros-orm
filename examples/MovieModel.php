@@ -19,6 +19,11 @@ class Movie extends Model
      */
     protected static $primary_key = 'id';
 
+    /**
+     * Allowed attributes to edit.
+     */
+    protected static $allowed_attributes = array( 'name' );
+
 
     /**
      * Thats it!
