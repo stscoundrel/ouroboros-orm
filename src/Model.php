@@ -16,6 +16,9 @@ use Silvanus\Ouroboros\Exceptions\NoTableSetException;
 use Silvanus\Ouroboros\Exceptions\Model\NoAllowedAttributesException;
 use Silvanus\Ouroboros\Exceptions\Model\MissingIDException;
 
+// DB access.
+use Silvanus\Ouroboros\DatabaseAccess;
+
 /**
  * --> Models custom DB table
  * --> Common data manipulation meethods.
@@ -73,9 +76,7 @@ class Model implements ModelInterface, TableInterface
             throw new NoTableSetException();
         endif;
 
-        global $wpdb;
-
-        return $wpdb->prefix . static::$table;
+        return DatabaseAccess::get_prefix() . static::$table;
     }
 
     /**
@@ -192,17 +193,13 @@ class Model implements ModelInterface, TableInterface
      * Creates new record in DB.
      *
      * @param array $attributes to create, optional.
+     * @return int $id of created entry.
      */
     public static function create(array $attributes = array()) : int
     {
+        $id = DatabaseAccess::insert(self::get_table(), self::filter_attributes($attributes));
 
-        global $wpdb;
-
-        $attributes = self::filter_attributes($attributes);
-
-        $wpdb->insert(self::get_table(), $attributes);
-
-        return $wpdb->insert_id;
+        return $id;
     }
 
     /**
@@ -212,7 +209,6 @@ class Model implements ModelInterface, TableInterface
      */
     public static function update(array $attributes = array())
     {
-        global $wpdb;
 
         if (array_key_exists(self::get_primary_key(), $attributes)) :
             $id = $attributes[ self::get_primary_key() ];
@@ -222,11 +218,7 @@ class Model implements ModelInterface, TableInterface
 
         $attributes = self::filter_attributes($attributes);
 
-        $wpdb->update(
-            self::get_table(),
-            $attributes,
-            array( self::get_primary_key() => $id ),
-        );
+        DatabaseAccess::update(self::get_table(), $attributes, self::get_primary_key(), $id);
     }
 
     /**
@@ -236,12 +228,7 @@ class Model implements ModelInterface, TableInterface
      */
     public static function delete(int $id)
     {
-        global $wpdb;
-
-        $wpdb->delete(
-            self::get_table(),
-            array( self::get_primary_key() => $id ),
-        );
+        DatabaseAccess::delete(self::get_table(), self::get_primary_key(), $id );
     }
 
     /**
@@ -252,8 +239,6 @@ class Model implements ModelInterface, TableInterface
      */
     public static function find(int $id) : ModelInterface
     {
-        global $wpdb;
-
         $id = sanitize_text_field($id);
 
         $primary_key = self::get_primary_key();
@@ -276,8 +261,6 @@ class Model implements ModelInterface, TableInterface
      */
     public static function where(string $column_name, string $column_value) : array
     {
-        global $wpdb;
-
         $column_name = sanitize_text_field($column_name);
         $column_value = sanitize_text_field($column_value);
 
@@ -288,7 +271,7 @@ class Model implements ModelInterface, TableInterface
             $column_value = "'$column_value'";
         endif;
 
-        $results = $wpdb->get_results("SELECT * FROM $table WHERE $column_name = $column_value", ARRAY_A);
+        $results = DatabaseAccess::get_results($table, $column_name, $column_value);
 
         $records = self::instances_from_array($results);
 
@@ -302,11 +285,8 @@ class Model implements ModelInterface, TableInterface
      */
     public static function all() : array
     {
-        global $wpdb;
 
-        $table   = self::get_table();
-
-        $results = $wpdb->get_results("SELECT * FROM $table", ARRAY_A);
+        $results = DatabaseAccess::get_all(self::get_table());
 
         $records = self::instances_from_array($results);
 
