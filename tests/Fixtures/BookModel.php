@@ -1,11 +1,11 @@
 <?php
 
-namespace Silvanus\Ouroboros\Tests\Model\Fixtures;
+namespace Silvanus\Ouroboros\Tests\Fixtures;
 
 // Ouroboros classes.
 use Silvanus\Ouroboros\Model;
 
-class Bookmodel extends Model
+class BookModel extends Model
 {
 
     /**
