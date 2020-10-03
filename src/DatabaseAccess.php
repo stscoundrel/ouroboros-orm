@@ -78,7 +78,7 @@ class DatabaseAccess implements DatabaseAccessInterface
     }
 
     /**
-     * Delete record from DB.
+     * Update record in DB.
      *
      * @param string $table to use.
      * @param array $attributes to use.
