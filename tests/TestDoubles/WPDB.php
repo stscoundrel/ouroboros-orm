@@ -28,6 +28,11 @@ class WPDB
      */
     public $insert_id;
 
+    public function get_charset_collate() : string
+    {
+        return '';
+    }
+
     /**
      * Store "created" data in class property.
      */
@@ -80,5 +85,10 @@ class WPDB
 
             return array($entry);
         }
+    }
+
+    public function query(string $sql)
+    {
+        return $sql;
     }
 }

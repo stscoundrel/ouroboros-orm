@@ -45,7 +45,7 @@ class DatabaseAccess implements DatabaseAccessInterface
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         // Execute using WordPress functions.
-        dbDelta($sql);
+        return dbDelta($sql);
     }
 
     /**
@@ -62,7 +62,7 @@ class DatabaseAccess implements DatabaseAccessInterface
         $sql = 'DROP TABLE  IF EXISTS ' . $table . ';';
 
         // Execute using WPDB.
-        $wpdb->query($sql);
+        return $wpdb->query($sql);
     }
 
     /**
