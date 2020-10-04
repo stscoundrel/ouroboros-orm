@@ -68,4 +68,26 @@ final class MigrationTest extends TestCase
             $migration->get_schema()
         );
     }
+
+    public function testCanRunUpCommand(): void
+    {
+        $migration = new BookMigration();
+        $migration->up();
+
+        $this->assertContains(
+            'Migration ran, up',
+            WP_CLI::$successes
+        );
+    }
+
+    public function testCanRunDownCommand(): void
+    {
+        $migration = new BookMigration();
+        $migration->down();
+
+        $this->assertContains(
+            'Migration ran, down',
+            WP_CLI::$successes
+        );
+    }
 }
