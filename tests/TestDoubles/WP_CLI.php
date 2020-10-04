@@ -16,11 +16,13 @@ class WP_CLI
      */
     public static $successes = array();
 
-    public static function add_command(string $command, $class ) {
+    public static function add_command(string $command, $class)
+    {
         static::$added_commands[] = array( $command, $class );
     }
 
-    public static function success(string $message ) {
+    public static function success(string $message)
+    {
         static::$successes[] = $message;
     }
 }

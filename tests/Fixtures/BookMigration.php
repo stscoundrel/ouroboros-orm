@@ -27,6 +27,5 @@ class BookMigration extends Migration
     public function set_schema()
     {
         $this->schema = new BookSchema();
-
     }
 }

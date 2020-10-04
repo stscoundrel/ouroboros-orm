@@ -26,6 +26,5 @@ class BookMigrationMissingSchema extends Migration
      */
     public function set_schema()
     {
-
     }
 }
