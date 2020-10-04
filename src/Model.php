@@ -307,7 +307,8 @@ class Model implements ModelInterface, TableInterface
             $attributes[self::get_primary_key()] = $this->id;
             self::update($attributes);
         else :
-            self::create($attributes);
+            $id = self::create($attributes);
+            $this->id = $id;
         endif;
     }
 

@@ -157,10 +157,9 @@ final class ModelTest extends TestCase
         $attributes = array( 'name' => 'Cryptonomicon', 'author' => 'Neal Stephenson' );
 
         BookModel::create($attributes);
-        //var_dump( $this->wpdb->created );
+
         $attributes = array( 'id' => 1, 'name' => 'Anathema' );
         BookModel::update($attributes);
-        //var_dump( $this->wpdb->created );
 
         $entry;
         foreach ($this->wpdb->created as $created) :
@@ -196,6 +195,32 @@ final class ModelTest extends TestCase
         $this->assertEquals(
             $expected,
             BookModel::find(3)->get_attributes()
+        );
+    }
+
+    public function testModelCanSaveInstance()
+    {
+        // Create initial book.
+        $book = new BookModel();
+        $book->set('name', 'Aurora Rising');
+        $book->set('author', 'Neal Stephenson');
+        $book->save();
+
+        $expected = array( 'name' => 'Aurora Rising', 'author' => 'Neal Stephenson', 'id' => 1  );
+
+        $this->assertContains(
+            $expected,
+            $this->wpdb->created
+        );
+
+        // Use same instance to save, should update.
+        $book->set('author', 'Alastair Reynolds');
+        $book->save();
+        $expected['author'] = 'Alastair Reynolds';
+
+        $this->assertContains(
+            $expected,
+            $this->wpdb->created
         );
     }
 }
