@@ -30,6 +30,9 @@ class DatabaseAccess implements DatabaseAccessInterface
      *
      * @param string $table name to create.
      * @param string $columns_sql parsed in Schema.
+     *
+     * How WP wants this done:
+     * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
      */
     public static function create_table(string $table, string $columns_sql)
     {
