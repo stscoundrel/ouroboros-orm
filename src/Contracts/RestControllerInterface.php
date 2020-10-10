@@ -14,6 +14,10 @@ interface RestControllerInterface
 
     public function register_routes();
 
+    public function get_namespace() : string;
+
+    public function get_resource() : string;
+
     public function get_items(WP_REST_Request $request);
 
     public function get_item(WP_REST_Request $request);

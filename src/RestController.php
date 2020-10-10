@@ -53,6 +53,24 @@ class RestController implements RestControllerInterface
     }
 
     /**
+     * Get controller REST namespace.
+     *
+     * @return string.
+     */
+    public function get_namespace() : string {
+        return $this->namespace;
+    }
+
+    /**
+     * Get controller REST resource name.
+     *
+     * @return string.
+     */
+    public function get_resource() : string {
+        return $this->resource;
+    }
+
+    /**
      * Return model class associated with endpoint.
      *
      * @return ModelInterface $model of endpoint.
