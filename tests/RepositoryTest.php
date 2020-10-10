@@ -26,8 +26,18 @@ final class RepositoryTest extends TestCase
         $result = $repository->all();
 
         $this->assertEquals(
-            $result[0],
-            'All was called'
+            count($result),
+            3
+        );
+
+        $this->assertEquals(
+            $result[0]->get('name'),
+            'test1'
+        );
+
+        $this->assertEquals(
+            $result[2]->get('name'),
+            'test3'
         );
     }
 

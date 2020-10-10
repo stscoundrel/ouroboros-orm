@@ -41,7 +41,18 @@ class FakeModel extends Model
 
     public static function all() : array
     {
-        return array('All was called');
+        $fake1 = new FakeModel();
+        $fake1->set('name', 'test1');
+        $fake2 = new FakeModel();
+        $fake2->set('name', 'test2');
+        $fake3 = new FakeModel();
+        $fake3->set('name', 'test3');
+
+        return array(
+            $fake1,
+            $fake2,
+            $fake3,
+        );
     }
 
     public static function find(int $id) : ModelInterface
@@ -56,6 +67,13 @@ class FakeModel extends Model
         if ($id === 666) :
             $fake = new FakeModel();
             $fake->set('name', 'Fake from get');
+
+            return $fake;
+        endif;
+
+        if ($id === 1989) :
+            $fake = new FakeModel();
+            $fake->set('name', 'Fake from REST');
 
             return $fake;
         endif;

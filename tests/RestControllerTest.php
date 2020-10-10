@@ -9,6 +9,7 @@ use Silvanus\Ouroboros\Exceptions\NoModelSetException;
 
 // Fixtures.
 use Silvanus\Ouroboros\Tests\Fixtures\BookModel;
+use Silvanus\Ouroboros\Tests\Fixtures\FakeModel;
 use Silvanus\Ouroboros\Tests\Fixtures\BookController;
 
 // Test Doubles.
@@ -22,6 +23,7 @@ final class RestControllerTest extends TestCase
      */
     public static function setUpBeforeClass(): void
     {
+        require_once('TestDoubles/WP_REST_Request.php');
         require_once('TestDoubles/register_rest_route.php');
     }
 
@@ -103,7 +105,47 @@ final class RestControllerTest extends TestCase
                 )
             ),
             $registered_rest_routes,
+        );  
+    }
+
+    public function testGetsItem(): void
+    {
+        $model      = new FakeModel();
+        $controller = new RestController($model);
+        $request    = new WP_REST_Request();
+        $item       = $controller->get_item($request);
+
+        $this->assertTrue(
+            is_array($item),
+            true,
         );
-            
+
+        $this->assertEquals(
+            'Fake from REST',            
+            $item['name'],
+        );
+    }
+
+    public function testGetsItems(): void
+    {
+        $model      = new FakeModel();
+        $controller = new RestController($model);
+        $request    = new WP_REST_Request();
+        $items      = $controller->get_items($request);
+
+        $this->assertEquals(
+            count($items),
+            3
+        );
+
+        $this->assertEquals(
+            $items[0]['name'],
+            'test1'
+        );
+
+        $this->assertEquals(
+            $items[2]['name'],
+            'test3'
+        );
     }
 }
