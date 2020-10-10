@@ -119,4 +119,62 @@ final class SchemaTest extends TestCase
             BookSchema::drop()
         );
     }
+
+    public function testCanSetPropertiesInConstruct(): void
+    {
+        $columns = array(
+            'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
+            'name' => 'varchar(255) NOT NULL'
+        );
+        $schema = new Schema('books', $columns);        
+
+        $this->assertEquals(
+            'books',
+            $schema::get_table()
+        );
+
+        $this->assertEquals(
+            'wp_books',
+            $schema::get_table_with_prefix()
+        );
+
+        $this->assertEquals(
+            array(
+                'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
+                'name' => 'varchar(255) NOT NULL'
+            ),
+            $schema::get_columns(),
+        );
+    }
+
+    public function testCanSetPropertiesAfterConstruct(): void
+    {
+        $columns = array(
+            'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
+            'name' => 'varchar(255) NOT NULL'
+        );
+        $schema = new Schema();
+        $schema::set_table('books');
+        foreach( $columns as $key => $value ) :
+            $schema::add_column($key, $value);
+        endforeach;
+
+        $this->assertEquals(
+            'books',
+            $schema::get_table()
+        );
+
+        $this->assertEquals(
+            'wp_books',
+            $schema::get_table_with_prefix()
+        );
+
+        $this->assertEquals(
+            array(
+                'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
+                'name' => 'varchar(255) NOT NULL'
+            ),
+            $schema::get_columns(),
+        );
+    }
 }

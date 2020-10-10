@@ -115,6 +115,26 @@ final class ModelTest extends TestCase
         );
     }
 
+    public function testModelCanUnsetAttributes()
+    {
+        $model = new BookModel();
+        $model->set('name', 'The Prefect');
+        $model->set('author', 'Alastair Reynolds');
+        $model->unset('name');
+
+        $all = $model->get_attributes();
+
+        $this->assertArrayHasKey(
+            'author',
+            $all
+        );
+
+        $this->assertFalse(
+            array_key_exists('name', $all),
+            true,
+        );
+    }
+
     public function testModelCanGetAndSetPrimaryKey()
     {
 

@@ -25,6 +25,9 @@
       "test": [
         "phpunit --testdox"
       ],
+      "coverage": [
+        "phpunit --testdox --coverage-html coverage"
+      ],
       "lint": [
         "phpcs"
       ],

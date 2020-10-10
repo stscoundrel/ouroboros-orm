@@ -57,7 +57,7 @@ class Schema implements SchemaInterface, TableInterface
 
         if ($table) :
             // Set table name.
-            static::$table = self::set_table($table);
+            self::set_table($table);
         endif;
 
         if ($columns) :
