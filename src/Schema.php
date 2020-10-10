@@ -57,7 +57,7 @@ class Schema implements SchemaInterface, TableInterface
 
         if ($table) :
             // Set table name.
-            static::$table = self::set_table($table);
+            self::set_table($table);
         endif;
 
         if ($columns) :
@@ -92,7 +92,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function get_table_with_prefix() : string
     {
-        return DatabaseAccess::get_prefix() . static::$table;
+        return DatabaseAccess::get_prefix() . static::get_table();
     }
 
     /**
@@ -112,6 +112,10 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function get_primary_key() : string
     {
+        if (! static::$primary_key) :
+            return 'id';
+        endif;
+
         return static::$primary_key;
     }
 
@@ -182,12 +186,12 @@ class Schema implements SchemaInterface, TableInterface
 
     /**
      * Save table to database.
-     * How WP wants this done:
-     * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
      */
     public static function create()
     {
-        DatabaseAccess::create_table(self::get_table_with_prefix(), self::get_columns_sql());
+        $result = DatabaseAccess::create_table(self::get_table_with_prefix(), self::get_columns_sql());
+
+        return $result;
     }
 
     /**
@@ -195,6 +199,8 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function drop()
     {
-        DatabaseAccess::drop_table(self::get_table_with_prefix());
+        $result = DatabaseAccess::drop_table(self::get_table_with_prefix());
+
+        return $result;
     }
 }

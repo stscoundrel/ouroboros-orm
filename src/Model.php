@@ -228,7 +228,7 @@ class Model implements ModelInterface, TableInterface
      */
     public static function delete(int $id)
     {
-        DatabaseAccess::delete(self::get_table(), self::get_primary_key(), $id );
+        DatabaseAccess::delete(self::get_table(), self::get_primary_key(), $id);
     }
 
     /**
@@ -307,7 +307,8 @@ class Model implements ModelInterface, TableInterface
             $attributes[self::get_primary_key()] = $this->id;
             self::update($attributes);
         else :
-            self::create($attributes);
+            $id = self::create($attributes);
+            $this->id = $id;
         endif;
     }
 

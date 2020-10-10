@@ -30,6 +30,9 @@ class DatabaseAccess implements DatabaseAccessInterface
      *
      * @param string $table name to create.
      * @param string $columns_sql parsed in Schema.
+     *
+     * How WP wants this done:
+     * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
      */
     public static function create_table(string $table, string $columns_sql)
     {
@@ -42,7 +45,7 @@ class DatabaseAccess implements DatabaseAccessInterface
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         // Execute using WordPress functions.
-        dbDelta($sql);
+        return dbDelta($sql);
     }
 
     /**
@@ -59,7 +62,7 @@ class DatabaseAccess implements DatabaseAccessInterface
         $sql = 'DROP TABLE  IF EXISTS ' . $table . ';';
 
         // Execute using WPDB.
-        $wpdb->query($sql);
+        return $wpdb->query($sql);
     }
 
     /**
@@ -78,7 +81,7 @@ class DatabaseAccess implements DatabaseAccessInterface
     }
 
     /**
-     * Delete record from DB.
+     * Update record in DB.
      *
      * @param string $table to use.
      * @param array $attributes to use.

@@ -40,7 +40,7 @@ class Repository implements RepositoryInterface
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->model::all();
     }
 
     /**
@@ -51,7 +51,7 @@ class Repository implements RepositoryInterface
      */
     public function get($id)
     {
-        return $this->model->find($id);
+        return $this->model::find($id);
     }
 
     /**
@@ -62,7 +62,7 @@ class Repository implements RepositoryInterface
      */
     public function create($attributes)
     {
-        $id = $this->model->create($attributes);
+        $id = $this->model::create($attributes);
 
         return $this->get($id);
     }
@@ -75,7 +75,7 @@ class Repository implements RepositoryInterface
      */
     public function update($attributes)
     {
-        $this->model->update($attributes);
+        $this->model::update($attributes);
     }
 
     /**
@@ -85,6 +85,6 @@ class Repository implements RepositoryInterface
      */
     public function delete($id)
     {
-        $this->model->delete($id);
+        $this->model::delete($id);
     }
 }

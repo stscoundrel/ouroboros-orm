@@ -14,6 +14,9 @@ use Silvanus\Ouroboros\Contracts\SchemaInterface;
 // Exceptions.
 use Silvanus\Ouroboros\Exceptions\Migration\NoSchemaSetException;
 
+// WP deps.
+use \WP_CLI;
+
 /**
  * --> Receive table schema
  * --> Create table based on schema
@@ -52,7 +55,7 @@ abstract class Migration implements MigrationInterface
          * Expose our CLI commands through classname keyword
          * Example: wp ouroboros migrate [NAME_OF_MIGRATION] up
          */
-        \WP_CLI::add_command('ouroboros migrate ' . $this->command, get_called_class());
+        WP_CLI::add_command('ouroboros migrate ' . $this->command, get_called_class());
     }
 
     /**
@@ -83,7 +86,7 @@ abstract class Migration implements MigrationInterface
 
         $schema::create();
 
-        \WP_CLI::success('Migration ran, up');
+        WP_CLI::success('Migration ran, up');
     }
 
     /**
@@ -95,6 +98,6 @@ abstract class Migration implements MigrationInterface
 
         $schema::drop();
 
-        \WP_CLI::success('Migration ran, down');
+        WP_CLI::success('Migration ran, down');
     }
 }
