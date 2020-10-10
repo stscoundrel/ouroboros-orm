@@ -57,7 +57,8 @@ class RestController implements RestControllerInterface
      *
      * @return string.
      */
-    public function get_namespace() : string {
+    public function get_namespace() : string
+    {
         return $this->namespace;
     }
 
@@ -66,7 +67,8 @@ class RestController implements RestControllerInterface
      *
      * @return string.
      */
-    public function get_resource() : string {
+    public function get_resource() : string
+    {
         return $this->resource;
     }
 

@@ -44,7 +44,7 @@ final class RestControllerTest extends TestCase
         $controller = new RestController($model);
 
         $this->assertEquals(
-            'ouroboros',            
+            'ouroboros',
             $controller->get_namespace(),
         );
 
@@ -60,7 +60,7 @@ final class RestControllerTest extends TestCase
         $controller = new BookController($model);
 
         $this->assertEquals(
-            'myplugin',            
+            'myplugin',
             $controller->get_namespace(),
         );
 
@@ -105,7 +105,7 @@ final class RestControllerTest extends TestCase
                 )
             ),
             $registered_rest_routes,
-        );  
+        );
     }
 
     public function testGetsItem(): void
@@ -121,7 +121,7 @@ final class RestControllerTest extends TestCase
         );
 
         $this->assertEquals(
-            'Fake from REST',            
+            'Fake from REST',
             $item['name'],
         );
     }

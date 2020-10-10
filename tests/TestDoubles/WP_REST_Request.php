@@ -9,5 +9,4 @@ class WP_REST_Request
     {
         return 1989;
     }
-    
 }
