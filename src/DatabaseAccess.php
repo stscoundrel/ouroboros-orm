@@ -19,7 +19,7 @@ class DatabaseAccess implements DatabaseAccessInterface
     /**
      * Get prefix this WP installation uses for tables.
      */
-    public static function get_prefix() : string
+    public function get_prefix() : string
     {
         global $wpdb;
         return $wpdb->prefix;
@@ -34,7 +34,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * How WP wants this done:
      * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
      */
-    public static function create_table(string $table, string $columns_sql)
+    public function create_table(string $table, string $columns_sql)
     {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
@@ -53,7 +53,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      *
      * @param string $table name to create.
      */
-    public static function drop_table(string $table)
+    public function drop_table(string $table)
     {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
@@ -71,7 +71,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $table name.
      * @param array $attributes fields.
      */
-    public static function insert(string $table, array $attributes) : int
+    public function insert(string $table, array $attributes) : int
     {
         global $wpdb;
 
@@ -88,7 +88,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $primary_key to use.
      * @param int $id to delete.
      */
-    public static function update(string $table, array $attributes, string $primary_key, int $id)
+    public function update(string $table, array $attributes, string $primary_key, int $id)
     {
         global $wpdb;
 
@@ -106,7 +106,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $primary_key to use.
      * @param int $id to delete.
      */
-    public static function delete(string $table, string $primary_key, int $id)
+    public function delete(string $table, string $primary_key, int $id)
     {
         global $wpdb;
 
@@ -124,7 +124,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $column_value to query.
      * @return array.
      */
-    public static function get_results(string $table, string $column_name, string $column_value)
+    public function get_results(string $table, string $column_name, string $column_value)
     {
         global $wpdb;
 
@@ -137,7 +137,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $table name.
      * @return array.
      */
-    public static function get_all(string $table) : array
+    public function get_all(string $table) : array
     {
         global $wpdb;
 

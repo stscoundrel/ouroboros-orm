@@ -126,7 +126,7 @@ final class SchemaTest extends TestCase
             'id' => 'bigint(20) NOT NULL AUTO_INCREMENT',
             'name' => 'varchar(255) NOT NULL'
         );
-        $schema = new Schema('books', $columns);        
+        $schema = new Schema('books', $columns);
 
         $this->assertEquals(
             'books',
@@ -155,7 +155,7 @@ final class SchemaTest extends TestCase
         );
         $schema = new Schema();
         $schema::set_table('books');
-        foreach( $columns as $key => $value ) :
+        foreach ($columns as $key => $value) :
             $schema::add_column($key, $value);
         endforeach;
 

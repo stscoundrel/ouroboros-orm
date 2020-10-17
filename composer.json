@@ -23,7 +23,7 @@
     },
     "scripts": {
       "test": [
-        "phpunit --testdox"
+        "phpunit --testdox --testsuite Ouroboros"
       ],
       "coverage": [
         "phpunit --testdox --coverage-html coverage"
@@ -33,6 +33,15 @@
       ],
       "fix": [
         "phpcbf -p -w"
+      ],
+      "test:model": [
+        "phpunit --testdox --testsuite Models"
+      ],
+      "test:migration": [
+        "phpunit --testdox --testsuite Migrations"
+      ],
+      "test:schema": [
+        "phpunit --testdox --testsuite Schemas"
       ]
     }
 }
