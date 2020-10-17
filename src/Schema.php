@@ -7,21 +7,23 @@
 
 namespace Silvanus\Ouroboros;
 
-// DB access.
-use Silvanus\Ouroboros\DatabaseAccess;
-
 // Contracts.
 use Silvanus\Ouroboros\Contracts\SchemaInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
+use Silvanus\Ouroboros\Contracts\DatabaseAccessInterface;
+use Silvanus\Ouroboros\Contracts\HasDatabaseAccessInterface;
 
 // Exceptions.
 use Silvanus\Ouroboros\Exceptions\NoTableSetException;
+
+// Default DB access.
+use Silvanus\Ouroboros\DatabaseAccess;
 
 /**
  * --> Define table name
  * --> Define table structure
  */
-class Schema implements SchemaInterface, TableInterface
+class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterface
 {
 
     /**
@@ -45,6 +47,13 @@ class Schema implements SchemaInterface, TableInterface
      * @var array
      */
     protected static $columns;
+
+    /**
+     * Database access instance.
+     *
+     * @var ?DatabaseAccessInterface.
+     */
+    protected static $db_access = null;
 
     /**
      * Class constructor
@@ -72,6 +81,29 @@ class Schema implements SchemaInterface, TableInterface
     }
 
     /**
+     * Get database access instance.
+     * If not provided, use default.
+     *
+     * @return DatabaseAccessInterface.
+     */
+    public static function get_database_access() : DatabaseAccessInterface {
+        if( static::$db_access === null ) :
+            static::set_database_access( new DatabaseAccess() );
+        endif;
+
+        return static::$db_access;
+    }
+
+    /**
+     * Set database access instance.
+     *
+     * @param DatabaseAccessInterface $accessor to use.
+     */
+    public static function set_database_access(DatabaseAccessInterface $accessor) {
+        static::$db_access = $accessor;
+    }
+
+    /**
      * Get table name
      *
      * @return string $table name.
@@ -92,7 +124,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function get_table_with_prefix() : string
     {
-        return DatabaseAccess::get_prefix() . static::get_table();
+        return static::get_database_access()->get_prefix() . static::get_table();
     }
 
     /**
@@ -189,7 +221,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function create()
     {
-        $result = DatabaseAccess::create_table(self::get_table_with_prefix(), self::get_columns_sql());
+        $result = static::get_database_access()->create_table(self::get_table_with_prefix(), self::get_columns_sql());
 
         return $result;
     }
@@ -199,7 +231,7 @@ class Schema implements SchemaInterface, TableInterface
      */
     public static function drop()
     {
-        $result = DatabaseAccess::drop_table(self::get_table_with_prefix());
+        $result = static::get_database_access()->drop_table(self::get_table_with_prefix());
 
         return $result;
     }
