@@ -7,6 +7,9 @@
 
 namespace Silvanus\Ouroboros\Contracts;
 
+// Contracts.
+use Silvanus\Ouroboros\Contracts\SchemaInterface;
+
 interface MigrationInterface
 {
 

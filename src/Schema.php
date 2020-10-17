@@ -86,9 +86,10 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      *
      * @return DatabaseAccessInterface.
      */
-    public static function get_database_access() : DatabaseAccessInterface {
-        if( static::$db_access === null ) :
-            static::set_database_access( new DatabaseAccess() );
+    public static function get_database_access() : DatabaseAccessInterface
+    {
+        if (static::$db_access === null) :
+            static::set_database_access(new DatabaseAccess());
         endif;
 
         return static::$db_access;
@@ -99,7 +100,8 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      *
      * @param DatabaseAccessInterface $accessor to use.
      */
-    public static function set_database_access(DatabaseAccessInterface $accessor) {
+    public static function set_database_access(DatabaseAccessInterface $accessor)
+    {
         static::$db_access = $accessor;
     }
 
