@@ -12,7 +12,7 @@ use Silvanus\Ouroboros\Contracts\DatabaseAccessInterface;
 
 interface HasDatabaseAccessInterface
 {
-    public function get_database_access() : DatabaseAccessInterface;
+    public static function get_database_access() : DatabaseAccessInterface;
 
-    public function set_database_access(DatabaseAccessInterface $accessor);
+    public static function set_database_access(DatabaseAccessInterface $accessor);
 }

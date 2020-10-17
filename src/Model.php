@@ -10,20 +10,22 @@ namespace Silvanus\Ouroboros;
 // Contracts.
 use Silvanus\Ouroboros\Contracts\ModelInterface;
 use Silvanus\Ouroboros\Contracts\TableInterface;
+use Silvanus\Ouroboros\Contracts\DatabaseAccessInterface;
+use Silvanus\Ouroboros\Contracts\HasDatabaseAccessInterface;
 
 // Exceptions.
 use Silvanus\Ouroboros\Exceptions\NoTableSetException;
 use Silvanus\Ouroboros\Exceptions\Model\NoAllowedAttributesException;
 use Silvanus\Ouroboros\Exceptions\Model\MissingIDException;
 
-// DB access.
+// Default DB access.
 use Silvanus\Ouroboros\DatabaseAccess;
 
 /**
  * --> Models custom DB table
  * --> Common data manipulation meethods.
  */
-class Model implements ModelInterface, TableInterface
+class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterface
 {
 
     /**
@@ -56,6 +58,13 @@ class Model implements ModelInterface, TableInterface
     public $id;
 
     /**
+     * Database access instance.
+     *
+     * @var ?DatabaseAccessInterface.
+     */
+    protected static $db_access = null;
+
+    /**
      * Class constructor.
      *
      * @param int $id of record in DB.
@@ -63,6 +72,29 @@ class Model implements ModelInterface, TableInterface
     public function __construct(?int $id = null)
     {
         $this->id = $id;
+    }
+
+    /**
+     * Get database access instance.
+     * If not provided, use default.
+     *
+     * @return DatabaseAccessInterface.
+     */
+    public static function get_database_access() : DatabaseAccessInterface {
+        if( static::$db_access === null ) :
+            static::set_database_access( new DatabaseAccess() );
+        endif;
+
+        return static::$db_access;
+    }
+
+    /**
+     * Set database access instance.
+     *
+     * @param DatabaseAccessInterface $accessor to use.
+     */
+    public static function set_database_access(DatabaseAccessInterface $accessor) {
+        static::$db_access = $accessor;
     }
 
     /**
@@ -76,7 +108,7 @@ class Model implements ModelInterface, TableInterface
             throw new NoTableSetException();
         endif;
 
-        return DatabaseAccess::get_prefix() . static::$table;
+        return static::get_database_access()->get_prefix() . static::$table;
     }
 
     /**
@@ -197,7 +229,7 @@ class Model implements ModelInterface, TableInterface
      */
     public static function create(array $attributes = array()) : int
     {
-        $id = DatabaseAccess::insert(self::get_table(), self::filter_attributes($attributes));
+        $id = static::get_database_access()->insert(self::get_table(), self::filter_attributes($attributes));
 
         return $id;
     }
@@ -218,7 +250,7 @@ class Model implements ModelInterface, TableInterface
 
         $attributes = self::filter_attributes($attributes);
 
-        DatabaseAccess::update(self::get_table(), $attributes, self::get_primary_key(), $id);
+        static::get_database_access()->update(self::get_table(), $attributes, self::get_primary_key(), $id);
     }
 
     /**
@@ -228,7 +260,7 @@ class Model implements ModelInterface, TableInterface
      */
     public static function delete(int $id)
     {
-        DatabaseAccess::delete(self::get_table(), self::get_primary_key(), $id);
+        static::get_database_access()->delete(self::get_table(), self::get_primary_key(), $id);
     }
 
     /**
@@ -271,7 +303,7 @@ class Model implements ModelInterface, TableInterface
             $column_value = "'$column_value'";
         endif;
 
-        $results = DatabaseAccess::get_results($table, $column_name, $column_value);
+        $results = static::get_database_access()->get_results($table, $column_name, $column_value);
 
         $records = self::instances_from_array($results);
 
@@ -286,7 +318,7 @@ class Model implements ModelInterface, TableInterface
     public static function all() : array
     {
 
-        $results = DatabaseAccess::get_all(self::get_table());
+        $results = static::get_database_access()->get_all(self::get_table());
 
         $records = self::instances_from_array($results);
 

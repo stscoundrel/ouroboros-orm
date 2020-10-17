@@ -33,6 +33,9 @@
       ],
       "fix": [
         "phpcbf -p -w"
+      ],
+      "test:model": [
+        "phpunit --testdox --testsuite Models"
       ]
     }
 }

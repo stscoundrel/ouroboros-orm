@@ -8,6 +8,9 @@
         <testsuite name="Ouroboros">
             <directory>./tests</directory>
         </testsuite>
+        <testsuite name="Models">
+            <file>./tests/ModelTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
