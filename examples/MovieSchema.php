@@ -1,6 +1,6 @@
 <?php
 
-namespace Your\namespace;
+namespace Your\Project;
 
 // Ouroboros classes.
 use Silvanus\Ouroboros\Schema;

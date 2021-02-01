@@ -1,4 +1,7 @@
 <?php
+
+namespace Silvanus\Ouroboros\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 // Ouroboros deps.

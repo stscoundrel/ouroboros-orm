@@ -1,4 +1,7 @@
 <?php
+
+namespace Silvanus\Ouroboros\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 // Ouroboros deps.
@@ -102,6 +105,7 @@ final class SchemaTest extends TestCase
 
     public function testCanCreateTable(): void
     {
+        // phpcs:ignore
         $expected = 'CREATE TABLE wp_books ( id bigint(20) NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, author varchar(255) NOT NULL, year varchar(255) NOT NULL, isbn varchar(255) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id) ) ;';
 
         $this->assertEquals(
