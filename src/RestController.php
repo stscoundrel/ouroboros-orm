@@ -55,7 +55,7 @@ class RestController implements RestControllerInterface
     /**
      * Get controller REST namespace.
      *
-     * @return string.
+     * @return string
      */
     public function get_namespace() : string
     {
@@ -65,7 +65,7 @@ class RestController implements RestControllerInterface
     /**
      * Get controller REST resource name.
      *
-     * @return string.
+     * @return string
      */
     public function get_resource() : string
     {
@@ -88,6 +88,8 @@ class RestController implements RestControllerInterface
 
     /**
      * Register available routes.
+     *
+     * @return void
      */
     public function register_routes()
     {
@@ -118,6 +120,10 @@ class RestController implements RestControllerInterface
      * Get all items.
      *
      * @param WP_REST_Request $request to handle.
+     *
+     * @return array[]
+     *
+     * @psalm-return list<array>
      */
     public function get_items(WP_REST_Request $request)
     {
@@ -136,6 +142,8 @@ class RestController implements RestControllerInterface
      * Get all items.
      *
      * @param WP_REST_Request $request to handle.
+     *
+     * @return array
      */
     public function get_item(WP_REST_Request $request)
     {

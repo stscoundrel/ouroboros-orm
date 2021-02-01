@@ -93,6 +93,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Set database access instance.
      *
      * @param DatabaseAccessInterface $accessor to use.
+     *
+     * @return void
      */
     public static function set_database_access(DatabaseAccessInterface $accessor)
     {
@@ -117,6 +119,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * set table name
      *
      * @param string $table name.
+     *
+     * @return void
      */
     public static function set_table(string $table)
     {
@@ -137,6 +141,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Set primary key.
      *
      * @param string $primary_key of table.
+     *
+     * @return void
      */
     public static function set_primary_key(string $primary_key)
     {
@@ -169,6 +175,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      *
      * @param string $key of attribute.
      * @param mixed $value of attribute.
+     *
+     * @return void
      */
     public function set(string $key, $value)
     {
@@ -181,8 +189,10 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Unset model attribute.
      *
      * @param string $key of attribute.
+     *
+     * @return void
      */
-    public function unset(string $key)
+    public function unset(string $key): void
     {
         unset($this->attributes[ $key ]) ;
     }
@@ -240,6 +250,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Updates record in DB.
      *
      * @param array $attributes to update, optional.
+     *
+     * @return void
      */
     public static function update(array $attributes = array())
     {
@@ -259,6 +271,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Delete record from DB.
      *
      * @param int $id of record in DB.
+     *
+     * @return void
      */
     public static function delete(int $id)
     {
@@ -269,21 +283,24 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Find record from DB by id.
      *
      * @param int $id of record.
-     * @return array $records by id.
+     *
+     * @return ?ModelInterface
      */
-    public static function find(int $id) : ModelInterface
+    public static function find(int $id) : ?ModelInterface
     {
         $id = sanitize_text_field($id);
 
         $primary_key = self::get_primary_key();
 
-        $records = self::where($primary_key, $id);
+        $record = self::where($primary_key, $id);
 
-        // if (count($record) === 1) :
-        //     $record = $record[0];
-        // endif;
+        if (count($record) === 1) :
+            $record = $record[0];
+        else:
+            return null;
+        endif;
 
-        return $records;
+        return $record;
     }
 
     /**
@@ -331,6 +348,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Persist current instance to DB.
      * --> If ID, update.
      * --> If not, create new.
+     *
+     * @return void
      */
     public function save()
     {
