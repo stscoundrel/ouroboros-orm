@@ -296,7 +296,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
         if (count($record) === 1) :
             $record = $record[0];
-        else:
+        else :
             return null;
         endif;
 

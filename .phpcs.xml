@@ -5,6 +5,7 @@
   <file>.</file>
   <exclude-pattern>vendor/</exclude-pattern>
   <exclude-pattern>tests/TestDoubles</exclude-pattern>
+  <exclude-pattern>stubs/</exclude-pattern>
 
   <arg value="sp"/>
   <arg name="basepath" value="./"/> -->
