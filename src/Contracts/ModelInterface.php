@@ -27,4 +27,6 @@ interface ModelInterface
     public function save();
 
     public static function all() : array;
+
+    public function get_attributes() : array;
 }

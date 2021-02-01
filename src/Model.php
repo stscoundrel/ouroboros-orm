@@ -148,7 +148,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      *
      * @return array $attributes of instance.
      */
-    public function get_attributes()
+    public function get_attributes(): array
     {
         return $this->attributes;
     }
@@ -269,7 +269,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Find record from DB by id.
      *
      * @param int $id of record.
-     * @return Model $record by id.
+     * @return array $records by id.
      */
     public static function find(int $id) : ModelInterface
     {
@@ -277,13 +277,13 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
         $primary_key = self::get_primary_key();
 
-        $record = self::where($primary_key, $id);
+        $records = self::where($primary_key, $id);
 
-        if (count($record) === 1) :
-            $record = $record[0];
-        endif;
+        // if (count($record) === 1) :
+        //     $record = $record[0];
+        // endif;
 
-        return $record;
+        return $records;
     }
 
     /**
@@ -291,7 +291,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      *
      * @param string $column_name in table.
      * @param string $column_value in table.
-     * @return Model $record by id.
+     * @return array $records.
      */
     public static function where(string $column_name, string $column_value) : array
     {

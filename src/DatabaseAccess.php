@@ -42,6 +42,9 @@ class DatabaseAccess implements DatabaseAccessInterface
         // Parse SQL from columns.
         $sql = 'CREATE TABLE ' . $table . ' ( ' . $columns_sql . ' ) ' . $charset_collate . ';';
 
+        /**
+         * @psalm-suppress MissingFile
+         */
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         // Execute using WordPress functions.
