@@ -79,6 +79,8 @@ abstract class Migration implements MigrationInterface
 
     /**
      * Create table, save columns.
+     *
+     * @return void
      */
     public function up()
     {
@@ -91,6 +93,8 @@ abstract class Migration implements MigrationInterface
 
     /**
      * Drop table, destroy all.
+     *
+     * @return void
      */
     public function down()
     {

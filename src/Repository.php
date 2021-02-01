@@ -47,7 +47,7 @@ class Repository implements RepositoryInterface
      * Get record from model by id.
      *
      * @param int $id of record.
-     * @return Model $record from db.
+     * @return ?ModelInterface $record from db.
      */
     public function get($id)
     {
@@ -58,7 +58,7 @@ class Repository implements RepositoryInterface
      * Create new record to DB
      *
      * @param array $attributes of record.
-     * @return Model $model that was created.
+     * @return ?ModelInterface $model that was created.
      */
     public function create($attributes)
     {
@@ -72,6 +72,8 @@ class Repository implements RepositoryInterface
      *
      * @param int $id of record.
      * @param array $attributes of record.
+     *
+     * @return void
      */
     public function update($attributes)
     {
@@ -82,6 +84,8 @@ class Repository implements RepositoryInterface
      * Delete record from DB
      *
      * @param int $id of record.
+     *
+     * @return void
      */
     public function delete($id)
     {

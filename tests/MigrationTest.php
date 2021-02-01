@@ -1,4 +1,7 @@
 <?php
+
+namespace Silvanus\Ouroboros\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 // Ouroboros deps.
@@ -14,6 +17,8 @@ use Silvanus\Ouroboros\Tests\Fixtures\BookSchema;
 
 // Test Doubles.
 use Silvanus\Ouroboros\Tests\TestDoubles\WPDB;
+
+use \WP_CLI;
 
 final class MigrationTest extends TestCase
 {

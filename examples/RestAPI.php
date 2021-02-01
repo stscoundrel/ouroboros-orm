@@ -1,10 +1,12 @@
 <?php
 
+namespace Your\Project;
+
 // Ouroboros classes.
 use Silvanus\Ouroboros\RestController;
 
 // Your model class.
-use Your\namespace\Movie;
+use Your\Project\Movie;
 
 class App
 {
