@@ -77,12 +77,8 @@ class RestController implements RestControllerInterface
      *
      * @return ModelInterface $model of endpoint.
      */
-    public function get_model() : ModelInterface
+    private function get_model() : ModelInterface
     {
-        if (! $this->model) :
-            throw new NoModelSetException();
-        endif;
-
         return $this->model;
     }
 
@@ -160,7 +156,7 @@ class RestController implements RestControllerInterface
      * @param ModelInterface $model to handle.
      * @return array $item data in JSONable format.
      */
-    public function prepare_item(ModelInterface $model) : array
+    private function prepare_item(ModelInterface $model) : array
     {
         $item = array(
             'id' => (int)$model->id,

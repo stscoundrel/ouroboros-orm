@@ -86,6 +86,11 @@ final class SchemaTest extends TestCase
         );
 
         Schema::set_primary_key('id');
+
+        $this->assertEquals(
+            'id',
+            Schema::get_primary_key()
+        );
     }
 
     public function testCanGetAndAddColumns(): void
@@ -179,6 +184,21 @@ final class SchemaTest extends TestCase
                 'name' => 'varchar(255) NOT NULL'
             ),
             $schema::get_columns(),
+        );
+    }
+
+    public function testCanInstantiateWithCustomArguments(): void
+    {
+        $book_schema = new BookSchema('custom_table', null, 'custom_primary_key');
+
+        $this->assertEquals(
+            'custom_table',
+            $book_schema::get_table()
+        );
+
+        $this->assertEquals(
+            'custom_primary_key',
+            $book_schema::get_primary_key()
         );
     }
 }

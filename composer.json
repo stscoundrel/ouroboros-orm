@@ -42,7 +42,7 @@
         "psalm"
       ],
       "infection" : [
-        "infection --threads=4 --min-covered-msi=75 --min-covered-msi=80"
+        "infection --threads=4 --min-msi=85 --min-covered-msi=85"
       ],
       "test:model": [
         "phpunit --testdox --testsuite Models"

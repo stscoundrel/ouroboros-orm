@@ -77,7 +77,7 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
         endif;
 
         // Set primary key, if defined.
-        static::$primary_key = $primary_key == false ? 'id' : $primary_key;
+        static::$primary_key = $primary_key === false ? 'id' : $primary_key;
     }
 
     /**
@@ -210,7 +210,7 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      *
      * @return string $columns in sql format.
      */
-    public static function get_columns_sql()
+    private static function get_columns_sql()
     {
         $columns = '';
 
