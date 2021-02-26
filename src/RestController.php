@@ -117,9 +117,7 @@ class RestController implements RestControllerInterface
      *
      * @param WP_REST_Request $request to handle.
      *
-     * @return array[]
-     *
-     * @psalm-return list<array>
+     * @return array
      */
     public function get_items(WP_REST_Request $request)
     {
@@ -139,15 +137,21 @@ class RestController implements RestControllerInterface
      *
      * @param WP_REST_Request $request to handle.
      *
-     * @return array
+     * @return ?array
      */
-    public function get_item(WP_REST_Request $request)
+    public function get_item(WP_REST_Request $request) : ?array
     {
         $id = $request->get_param('id');
 
-        $result = $this->get_model()->find($id);
+        if ($id) :
+            $result = $this->get_model()->find($id);
 
-        return $this->prepare_item($result);
+            if ($result) :
+                return $this->prepare_item($result);
+            endif;
+        endif;
+
+        return null;
     }
 
     /**
@@ -159,7 +163,7 @@ class RestController implements RestControllerInterface
     private function prepare_item(ModelInterface $model) : array
     {
         $item = array(
-            'id' => (int)$model->id,
+            'id' => $model->get_id(),
         );
 
         foreach ($model->get_attributes() as $key => $value) :

@@ -85,6 +85,13 @@ final class SchemaTest extends TestCase
             Schema::get_primary_key()
         );
 
+        Schema::set_primary_key('another_id');
+
+        $this->assertEquals(
+            'another_id',
+            Schema::get_primary_key()
+        );
+
         Schema::set_primary_key('id');
 
         $this->assertEquals(
@@ -198,6 +205,16 @@ final class SchemaTest extends TestCase
 
         $this->assertEquals(
             'custom_primary_key',
+            $book_schema::get_primary_key()
+        );
+    }
+
+    public function testUsesDefaultPrimaryKeyWhenNoGiven(): void
+    {
+        $book_schema = new BookSchema(null, null, null);
+
+        $this->assertEquals(
+            'id',
             $book_schema::get_primary_key()
         );
     }

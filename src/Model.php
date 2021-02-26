@@ -30,6 +30,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
     /**
      * Table name in database.
+     *
+     * @var ?string
      */
     protected static $table;
 
@@ -37,6 +39,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Primary key of table.
      * Default: id.
      * Used to fetch records by id.
+     *
+     * @var string
      */
     protected static $primary_key = 'id';
 
@@ -54,13 +58,15 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
     /**
      * ID of fetched record.
+     *
+     * @var ?int
      */
     public $id;
 
     /**
      * Database access instance.
      *
-     * @var ?DatabaseAccessInterface.
+     * @var ?DatabaseAccessInterface
      */
     protected static $db_access = null;
 
@@ -78,12 +84,14 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Get database access instance.
      * If not provided, use default.
      *
-     * @return DatabaseAccessInterface.
+     * @return DatabaseAccessInterface
      */
     public static function get_database_access() : DatabaseAccessInterface
     {
         if (static::$db_access === null) :
-            static::set_database_access(new DatabaseAccess());
+            $db_access = new DatabaseAccess();
+            static::set_database_access($db_access);
+            return $db_access;
         endif;
 
         return static::$db_access;
@@ -125,6 +133,16 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
     public static function set_table(string $table)
     {
         static::$table = $table;
+    }
+
+    /**
+     * Return ID of model entry.
+     *
+     * @return int
+     */
+    public function get_id() : ?int
+    {
+        return $this->id;
     }
 
     /**
@@ -202,7 +220,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Only allowed keys can be set to attributes.
      *
      * @param string $key of field.
-     * @return bool.
+     * @return bool
      */
     public static function is_allowed(string $key) : bool
     {
@@ -288,11 +306,11 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      */
     public static function find(int $id) : ?ModelInterface
     {
-        $id = sanitize_text_field($id);
+        $db_id = strval($id);
 
         $primary_key = self::get_primary_key();
 
-        $record = self::where($primary_key, $id);
+        $record = self::where($primary_key, $db_id);
 
         if (count($record) === 1) :
             $record = $record[0];
@@ -316,7 +334,6 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
         $column_value = sanitize_text_field($column_value);
 
         $table       = self::get_table();
-        $primary_key = self::get_primary_key();
 
         if (! is_numeric($column_name)) :
             $column_value = "'$column_value'";
@@ -369,7 +386,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Return model instances created from (DB) array.
      *
      * @param array $results from DB.
-     * @return $array $records of Models.
+     * @return array $records of Models.
      */
     private static function instances_from_array(array $results) : array
     {
