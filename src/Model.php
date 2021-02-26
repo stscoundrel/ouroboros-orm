@@ -220,7 +220,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * @param array $attributes to filter.
      * @return array $allowed_attributes that have been filtered.
      */
-    public static function filter_attributes(array $attributes) : array
+    private static function filter_attributes(array $attributes) : array
     {
         $allowed_attributes = array();
 
@@ -371,7 +371,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * @param array $results from DB.
      * @return $array $records of Models.
      */
-    protected static function instances_from_array(array $results) : array
+    private static function instances_from_array(array $results) : array
     {
         $records     = array();
         $primary_key = self::get_primary_key();
