@@ -9,6 +9,7 @@ namespace Silvanus\Ouroboros\Contracts;
 
 interface ModelInterface
 {
+    public function get_id() : ?int;
 
     public function get(string $key);
 

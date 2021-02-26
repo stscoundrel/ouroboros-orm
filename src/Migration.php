@@ -28,14 +28,14 @@ abstract class Migration implements MigrationInterface
     /**
      * WP CLI command base
      *
-     * @var string.
+     * @var string
      */
     protected $command;
 
     /**
      * Table schema
      *
-     * @var Schema.
+     * @var Schema
      */
     protected $schema;
 

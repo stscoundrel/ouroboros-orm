@@ -159,7 +159,7 @@ class RestController implements RestControllerInterface
     private function prepare_item(ModelInterface $model) : array
     {
         $item = array(
-            'id' => (int)$model->id,
+            'id' => $model->get_id(),
         );
 
         foreach ($model->get_attributes() as $key => $value) :

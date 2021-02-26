@@ -132,7 +132,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $table name.
      * @param string $column_name to query.
      * @param string $column_value to query.
-     * @return array.
+     * @return array
      */
     public function get_results(string $table, string $column_name, string $column_value)
     {
@@ -145,7 +145,7 @@ class DatabaseAccess implements DatabaseAccessInterface
      * Get all results from table.
      *
      * @param string $table name.
-     * @return array.
+     * @return array
      */
     public function get_all(string $table) : array
     {
