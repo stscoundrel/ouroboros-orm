@@ -83,7 +83,9 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
     public static function get_database_access() : DatabaseAccessInterface
     {
         if (static::$db_access === null) :
-            static::set_database_access(new DatabaseAccess());
+            $db_access = new DatabaseAccess();
+            static::set_database_access($db_access);
+            return $db_access;
         endif;
 
         return static::$db_access;
