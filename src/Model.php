@@ -30,6 +30,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
     /**
      * Table name in database.
+     *
+     * @var ?string
      */
     protected static $table;
 
@@ -37,6 +39,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Primary key of table.
      * Default: id.
      * Used to fetch records by id.
+     *
+     * @var string
      */
     protected static $primary_key = 'id';
 
@@ -54,6 +58,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
     /**
      * ID of fetched record.
+     *
+     * @var ?int
      */
     public $id;
 
@@ -328,7 +334,6 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
         $column_value = sanitize_text_field($column_value);
 
         $table       = self::get_table();
-        $primary_key = self::get_primary_key();
 
         if (! is_numeric($column_name)) :
             $column_value = "'$column_value'";

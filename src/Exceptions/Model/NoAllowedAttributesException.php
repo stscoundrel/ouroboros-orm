@@ -15,5 +15,8 @@ use \Exception;
 class NoAllowedAttributesException extends Exception
 {
     // phpcs:ignore
+    /**
+     * @var string
+     */
     protected $message = 'Allowed attributes for Model not declared. Add static allowed_attributes array property to whitelist model properties to be edited.';
 }

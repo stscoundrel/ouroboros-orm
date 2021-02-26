@@ -14,5 +14,8 @@ use \Exception;
  */
 class NoModelSetException extends Exception
 {
+    /**
+     * @var string
+     */
     protected $message = 'No model set in class. Add model property for the class to refer to.';
 }

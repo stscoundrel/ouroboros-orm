@@ -20,6 +20,8 @@ class Repository implements RepositoryInterface
 
     /**
      * Model of repository.
+     *
+     * @var ModelInterface
      */
     protected $model;
 

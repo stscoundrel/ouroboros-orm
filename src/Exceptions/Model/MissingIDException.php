@@ -14,5 +14,8 @@ use \Exception;
  */
 class MissingIDException extends Exception
 {
+    /**
+     * @var string
+     */
     protected $message = 'Missing ID in model update statement. Can not update.';
 }

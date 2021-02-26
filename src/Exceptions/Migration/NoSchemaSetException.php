@@ -14,5 +14,8 @@ use \Exception;
  */
 class NoSchemaSetException extends Exception
 {
+    /**
+     * @var string
+     */
     protected $message = 'Missing Schema property in Migration.';
 }

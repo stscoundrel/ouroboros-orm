@@ -62,7 +62,6 @@ class DatabaseAccess implements DatabaseAccessInterface
     public function drop_table(string $table)
     {
         global $wpdb;
-        $charset_collate = $wpdb->get_charset_collate();
 
         // Parse SQL from columns.
         $sql = 'DROP TABLE  IF EXISTS ' . $table . ';';
