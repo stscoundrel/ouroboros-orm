@@ -85,6 +85,10 @@ class WPDB
 
             return array($entry);
         }
+
+        if ($sql === "SELECT * FROM wp_books") {
+           return $this->created;
+        }
     }
 
     public function query(string $sql)

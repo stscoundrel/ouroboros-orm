@@ -241,6 +241,18 @@ final class ModelTest extends TestCase
         );
     }
 
+    public function testModelCanGetAll()
+    {
+        BookModel::create(array( 'name' => 'Revenger', 'author' => 'Alastair Reynolds' ));
+        BookModel::create(array( 'name' => 'Shadow Captain', 'author' => 'Alastair Reynolds' ));
+        BookModel::create(array( 'name' => 'Bone Silence', 'author' => 'Alastair Reynolds' ));
+
+        $this->assertEquals(
+            3,
+            count(BookModel::all())
+        );
+    }
+
     public function testModelCanSaveInstance()
     {
         // Create initial book.
