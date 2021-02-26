@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 // Ouroboros deps.
 use Silvanus\Ouroboros\Model;
+use Silvanus\Ouroboros\DatabaseAccess;
 
 // Ouroboros exceptions.
 use Silvanus\Ouroboros\Exceptions\NoTableSetException;
@@ -14,6 +15,7 @@ use Silvanus\Ouroboros\Exceptions\Model\MissingIDException;
 
 // Fixtures.
 use Silvanus\Ouroboros\Tests\Fixtures\BookModel;
+use Silvanus\Ouroboros\Tests\Fixtures\CustomDatabaseAccess;
 
 // Test Doubles.
 use Silvanus\Ouroboros\Tests\TestDoubles\WPDB;
@@ -39,6 +41,24 @@ final class ModelTest extends TestCase
         $wpdb = new WPDB();
 
         $this->wpdb = $wpdb;
+    }
+
+    public function testCanUseCustomDatabaseAccessor()
+    {
+        $accessor = new CustomDatabaseAccess();
+        $book_model = new BookModel();
+
+        $this->assertInstanceOf(
+            DatabaseAccess::class,
+            $book_model::get_database_access(),
+        );
+
+        $book_model::set_database_access($accessor);
+
+        $this->assertInstanceOf(
+            CustomDatabaseAccess::class,
+            $book_model::get_database_access(),
+        );
     }
 
     public function testModelCanGetTableIfSet()
