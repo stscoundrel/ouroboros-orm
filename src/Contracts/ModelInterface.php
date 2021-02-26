@@ -14,7 +14,7 @@ interface ModelInterface
 
     public function set(string $key, $value);
 
-    public static function find(int $id) : ModelInterface;
+    public static function find(int $id) : ?ModelInterface;
 
     public static function where(string $column_name, string $column_value) : array;
 
@@ -27,4 +27,6 @@ interface ModelInterface
     public function save();
 
     public static function all() : array;
+
+    public function get_attributes() : array;
 }

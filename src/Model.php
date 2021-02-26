@@ -93,6 +93,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Set database access instance.
      *
      * @param DatabaseAccessInterface $accessor to use.
+     *
+     * @return void
      */
     public static function set_database_access(DatabaseAccessInterface $accessor)
     {
@@ -117,6 +119,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * set table name
      *
      * @param string $table name.
+     *
+     * @return void
      */
     public static function set_table(string $table)
     {
@@ -137,6 +141,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Set primary key.
      *
      * @param string $primary_key of table.
+     *
+     * @return void
      */
     public static function set_primary_key(string $primary_key)
     {
@@ -148,7 +154,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      *
      * @return array $attributes of instance.
      */
-    public function get_attributes()
+    public function get_attributes(): array
     {
         return $this->attributes;
     }
@@ -169,6 +175,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      *
      * @param string $key of attribute.
      * @param mixed $value of attribute.
+     *
+     * @return void
      */
     public function set(string $key, $value)
     {
@@ -181,8 +189,10 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Unset model attribute.
      *
      * @param string $key of attribute.
+     *
+     * @return void
      */
-    public function unset(string $key)
+    public function unset(string $key): void
     {
         unset($this->attributes[ $key ]) ;
     }
@@ -210,7 +220,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * @param array $attributes to filter.
      * @return array $allowed_attributes that have been filtered.
      */
-    public static function filter_attributes(array $attributes) : array
+    private static function filter_attributes(array $attributes) : array
     {
         $allowed_attributes = array();
 
@@ -240,6 +250,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Updates record in DB.
      *
      * @param array $attributes to update, optional.
+     *
+     * @return void
      */
     public static function update(array $attributes = array())
     {
@@ -259,6 +271,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Delete record from DB.
      *
      * @param int $id of record in DB.
+     *
+     * @return void
      */
     public static function delete(int $id)
     {
@@ -269,9 +283,10 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Find record from DB by id.
      *
      * @param int $id of record.
-     * @return Model $record by id.
+     *
+     * @return ?ModelInterface
      */
-    public static function find(int $id) : ModelInterface
+    public static function find(int $id) : ?ModelInterface
     {
         $id = sanitize_text_field($id);
 
@@ -281,6 +296,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
 
         if (count($record) === 1) :
             $record = $record[0];
+        else :
+            return null;
         endif;
 
         return $record;
@@ -291,7 +308,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      *
      * @param string $column_name in table.
      * @param string $column_value in table.
-     * @return Model $record by id.
+     * @return array $records.
      */
     public static function where(string $column_name, string $column_value) : array
     {
@@ -331,6 +348,8 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * Persist current instance to DB.
      * --> If ID, update.
      * --> If not, create new.
+     *
+     * @return void
      */
     public function save()
     {
@@ -352,7 +371,7 @@ class Model implements ModelInterface, TableInterface, HasDatabaseAccessInterfac
      * @param array $results from DB.
      * @return $array $records of Models.
      */
-    protected static function instances_from_array(array $results) : array
+    private static function instances_from_array(array $results) : array
     {
         $records     = array();
         $primary_key = self::get_primary_key();

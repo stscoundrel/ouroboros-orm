@@ -55,7 +55,7 @@ class RestController implements RestControllerInterface
     /**
      * Get controller REST namespace.
      *
-     * @return string.
+     * @return string
      */
     public function get_namespace() : string
     {
@@ -65,7 +65,7 @@ class RestController implements RestControllerInterface
     /**
      * Get controller REST resource name.
      *
-     * @return string.
+     * @return string
      */
     public function get_resource() : string
     {
@@ -77,17 +77,15 @@ class RestController implements RestControllerInterface
      *
      * @return ModelInterface $model of endpoint.
      */
-    public function get_model() : ModelInterface
+    private function get_model() : ModelInterface
     {
-        if (! $this->model) :
-            throw new NoModelSetException();
-        endif;
-
         return $this->model;
     }
 
     /**
      * Register available routes.
+     *
+     * @return void
      */
     public function register_routes()
     {
@@ -118,6 +116,10 @@ class RestController implements RestControllerInterface
      * Get all items.
      *
      * @param WP_REST_Request $request to handle.
+     *
+     * @return array[]
+     *
+     * @psalm-return list<array>
      */
     public function get_items(WP_REST_Request $request)
     {
@@ -136,6 +138,8 @@ class RestController implements RestControllerInterface
      * Get all items.
      *
      * @param WP_REST_Request $request to handle.
+     *
+     * @return array
      */
     public function get_item(WP_REST_Request $request)
     {
@@ -152,7 +156,7 @@ class RestController implements RestControllerInterface
      * @param ModelInterface $model to handle.
      * @return array $item data in JSONable format.
      */
-    public function prepare_item(ModelInterface $model) : array
+    private function prepare_item(ModelInterface $model) : array
     {
         $item = array(
             'id' => (int)$model->id,

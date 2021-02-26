@@ -51,7 +51,7 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
     /**
      * Database access instance.
      *
-     * @var ?DatabaseAccessInterface.
+     * @var ?DatabaseAccessInterface
      */
     protected static $db_access = null;
 
@@ -77,19 +77,21 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
         endif;
 
         // Set primary key, if defined.
-        static::$primary_key = $primary_key == false ? 'id' : $primary_key;
+        static::$primary_key = $primary_key === false ? 'id' : $primary_key;
     }
 
     /**
      * Get database access instance.
      * If not provided, use default.
-     *
-     * @return DatabaseAccessInterface.
      */
     public static function get_database_access() : DatabaseAccessInterface
     {
+        
         if (static::$db_access === null) :
-            static::set_database_access(new DatabaseAccess());
+            $db_access = new DatabaseAccess();
+            static::set_database_access($db_access);
+
+            return $db_access;
         endif;
 
         return static::$db_access;
@@ -99,6 +101,8 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      * Set database access instance.
      *
      * @param DatabaseAccessInterface $accessor to use.
+     *
+     * @return void
      */
     public static function set_database_access(DatabaseAccessInterface $accessor)
     {
@@ -133,6 +137,8 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      * set table name
      *
      * @param string $table name.
+     *
+     * @return void
      */
     public static function set_table(string $table)
     {
@@ -157,6 +163,8 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      * Set primary key.
      *
      * @param string $primary_key of table.
+     *
+     * @return void
      */
     public static function set_primary_key(string $primary_key)
     {
@@ -168,6 +176,8 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      *
      * @param string $name of column.
      * @param string $type of column.
+     *
+     * @return void
      */
     public static function add_column(string $name, string $type)
     {
@@ -200,7 +210,7 @@ class Schema implements SchemaInterface, TableInterface, HasDatabaseAccessInterf
      *
      * @return string $columns in sql format.
      */
-    public static function get_columns_sql()
+    private static function get_columns_sql()
     {
         $columns = '';
 

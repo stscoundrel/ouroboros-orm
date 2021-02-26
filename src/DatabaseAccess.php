@@ -30,9 +30,12 @@ class DatabaseAccess implements DatabaseAccessInterface
      *
      * @param string $table name to create.
      * @param string $columns_sql parsed in Schema.
-     *
+
      * How WP wants this done:
+     *
      * @link https://codex.wordpress.org/Creating_Tables_with_Plugins
+     *
+     * @return array
      */
     public function create_table(string $table, string $columns_sql)
     {
@@ -42,6 +45,9 @@ class DatabaseAccess implements DatabaseAccessInterface
         // Parse SQL from columns.
         $sql = 'CREATE TABLE ' . $table . ' ( ' . $columns_sql . ' ) ' . $charset_collate . ';';
 
+        /**
+         * @psalm-suppress MissingFile
+         */
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         // Execute using WordPress functions.
@@ -87,6 +93,8 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param array $attributes to use.
      * @param string $primary_key to use.
      * @param int $id to delete.
+     *
+     * @return void
      */
     public function update(string $table, array $attributes, string $primary_key, int $id)
     {
@@ -105,6 +113,8 @@ class DatabaseAccess implements DatabaseAccessInterface
      * @param string $table to use.
      * @param string $primary_key to use.
      * @param int $id to delete.
+     *
+     * @return void
      */
     public function delete(string $table, string $primary_key, int $id)
     {

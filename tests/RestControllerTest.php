@@ -1,4 +1,7 @@
 <?php
+
+namespace Silvanus\Ouroboros\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 // Ouroboros deps.
@@ -12,8 +15,7 @@ use Silvanus\Ouroboros\Tests\Fixtures\BookModel;
 use Silvanus\Ouroboros\Tests\Fixtures\FakeModel;
 use Silvanus\Ouroboros\Tests\Fixtures\BookController;
 
-// Test Doubles.
-//use Silvanus\Ouroboros\Tests\TestDoubles\WPDB;
+use \WP_REST_Request;
 
 final class RestControllerTest extends TestCase
 {

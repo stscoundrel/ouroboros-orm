@@ -1,4 +1,7 @@
 <?php
+
+namespace Silvanus\Ouroboros\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 // Ouroboros deps.
@@ -83,6 +86,11 @@ final class SchemaTest extends TestCase
         );
 
         Schema::set_primary_key('id');
+
+        $this->assertEquals(
+            'id',
+            Schema::get_primary_key()
+        );
     }
 
     public function testCanGetAndAddColumns(): void
@@ -102,6 +110,7 @@ final class SchemaTest extends TestCase
 
     public function testCanCreateTable(): void
     {
+        // phpcs:ignore
         $expected = 'CREATE TABLE wp_books ( id bigint(20) NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, author varchar(255) NOT NULL, year varchar(255) NOT NULL, isbn varchar(255) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id) ) ;';
 
         $this->assertEquals(
@@ -175,6 +184,21 @@ final class SchemaTest extends TestCase
                 'name' => 'varchar(255) NOT NULL'
             ),
             $schema::get_columns(),
+        );
+    }
+
+    public function testCanInstantiateWithCustomArguments(): void
+    {
+        $book_schema = new BookSchema('custom_table', null, 'custom_primary_key');
+
+        $this->assertEquals(
+            'custom_table',
+            $book_schema::get_table()
+        );
+
+        $this->assertEquals(
+            'custom_primary_key',
+            $book_schema::get_primary_key()
         );
     }
 }
