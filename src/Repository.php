@@ -59,12 +59,12 @@ class Repository implements RepositoryInterface
     /**
      * Create new record to DB
      *
-     * @param array $attributes of record.
+     * @param array $data of record.
      * @return ?ModelInterface $model that was created.
      */
-    public function create($attributes)
+    public function create($data)
     {
-        $id = $this->model::create($attributes);
+        $id = $this->model::create($data);
 
         return $this->get($id);
     }
@@ -77,9 +77,9 @@ class Repository implements RepositoryInterface
      *
      * @return void
      */
-    public function update($attributes)
+    public function update($data)
     {
-        $this->model::update($attributes);
+        $this->model::update($data);
     }
 
     /**
