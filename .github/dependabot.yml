@@ -1,14 +1,21 @@
-
 version: 2
 updates:
-  - package-ecosystem: composer
-    directory: "/"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 25
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: monthly
+  open-pull-requests-limit: 25
+  groups:
+       composer-dependencies:
+          patterns:
+            - "*" # Match all dependencies to one PR.
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 25
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: monthly
+  open-pull-requests-limit: 25
+  groups:
+      ci-dependencies:
+        patterns:
+          - "*" # Match all dependencies to one PR.
