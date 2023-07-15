@@ -1,6 +1,8 @@
-## WORK IN PROGRESS
+## Status
 
-Do not use for purposes other than curiosity.
+Ouroboros was originally written when I still worked more with PHP / WP. The basic functionalities were finished and worked, but never really finalized or tested in a real project.
+
+There is a good chance it all works, so feel free to look around or fork it. Still, be warned: do not use for purposes other than curiosity.
 
 # Ouroboros ORM
 
@@ -20,8 +22,6 @@ WP database structure is less-than-optimal. When you find yourself creating cust
 However, we can't always decide what tools we use for a project. The way WordPress supports creating new tables or using data in them is very bare bones. Ouroboros aims to make working with custom tables more streamlined and enjoyable.
 
 ## Usage
-
-Instructions upcoming. To test the project:
 
 - See "examples" folder
 - See "tests" and "src" to get general idea.
